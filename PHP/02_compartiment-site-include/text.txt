@@ -1,0 +1,21 @@
+1 dossier 02_compartiment-site-include
+A l'interrieur du dossier:
+1 Fichier accueil.php
+1 Fichier contact.php
+1 Fichier actualites.php
+1 Fichier qui_sommes-nous.php
+
+
+
+1 dossier : include
+
+avec a l'interrieur
+1 Fichier
+    header.php
+    nav.php
+    footer.php
+
+
+1 dossier : post
+1fichier
+    formulaire1.php

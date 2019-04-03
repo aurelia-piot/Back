@@ -1,0 +1,68 @@
+        PHP
+
+EX cour 01_entrainment.php
+
+<h2 class="display-4 text-center">Ecriture et affichage</h2><hr>
+        <!-- Nous pouvons ecrire du Html dans un fichier ayant l'extension PHP, l'inverse n'est pas possible -->
+
+    <?php // ouverture de la balise PHP
+         //Il est possible d'ouvrir  la balise PHP autant de fois que l'on le souhaite sur un fichier PHP
+
+        echo 'Bonjour'; //echo est une instruction d'affichage que l'on peut traduire par 'affiche moi'.
+        echo '<br>'; // nous pouvons egalement y mettre du Html
+        print 'Bonjour'; // print est une autre instruction d'affichage, pas de difference avec 'echo'.
+        echo '<hr> <h2 class="display-4 text-center">Commentaires</h2> <hr>';
+
+    // fermeture de la balise PHP
+    ?> 
+
+    <?= "allo" ?>  <!-- le "=" remplace le 'echo' -->
+
+<strong>Bonjour</strong>
+
+<!-- nous voyons qu'il est egalement posssible de fermer et ré-ouvrir PHP pour melanger du code Html & Php -->
+
+<?php
+
+echo 'Text'; // ceci est un commentaire sur une seul ligne
+echo 'Text'; # ceci est un commentaire sur une seul ligne
+echo 'Text'; /*ceci est un commentaire sur 
+                plusieurs lignes*/
+
+?>
+------------------------------------------------
+<?php
+
+echo '<hr> <h2 class="display-4 text-center">Variables : Types / Declaration / Affectation</h2> <hr>';
+
+//une variable est un espace nommé permettant de conserver une valeur
+
+    //$2a -> erreur!!
+    // $a2 -> OK
+    //caractere autorisés : A à Z / a à z /0 à 9
+    //pas d'accents, ni espaces
+    $a = 127; // affectation de 127 dans la variable nommé "a"
+
+    //echo gettype() est une fonction predefinie qui retourne le type de l'argument entré (en generale c'est une variable)
+    echo gettype($a);
+    // ici c'est un nombre entier donc : INTEGER
+    echo'<br>';
+
+    $b = 1.5;
+    echo gettype($b); //un nombre a virgule : DOUBLE
+    echo'<br>';     
+
+    $c = "une chaine";
+    echo gettype($c); //du texte : STRING
+    echo'<br>';
+
+    $d = '127';
+    echo gettype($d); //par ce qu'il ce trouve entre quote, le nombre est considérer comme une chaine de charactere donc un STRING
+    echo'<br>';
+
+     $e = true;
+    echo gettype($e); //true/ false = boolean 
+    echo'<br>';
+
+
+?>

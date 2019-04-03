@@ -1,0 +1,190 @@
+BDD - Base De Donnée
+
+1-- Connexion à la BDD --
+    mysql -u root -p 
+
+    -- Selectionner une BDD --
+        USE nom_de_la_BDD;
+
+2-- Afficher les BDD --
+    SHOW DATABASES;
+
+    -- Creation d'une BDD --
+        CREATE DATABASE nom_de_la_BDD;
+
+
+3-- Afficher lA-LES TABLES--
+    SHOW TABLES;
+
+    -- creation d'une TABLE dans la BDD --
+    -- Type de donnée (INT,VARCHAR,TEXT,FLOAT...) --
+        CREATE TABLE fruit (id_fruit INT(3), nom VARCHAR(60), origine VARCHAR(50), calibre INT(1), prix FLOAT, categorie VARCHAR(20)); (nom_des_colonne + Le type (+ le nbr de caractere max) )
+
+    -- Insertion dans une BDD --
+        INSERT INTO nom_de_la_TABLE VALUE ('1','pomme','France','5','12.50','Golden');
+
+    --=--
+
+    INSERT INTO fruit (id_fruit, nom, origine, calibre, prix, categorie)
+        VALUES ('1','pomme','France','5','12.50','Golden');
+
+    --Modifier le nom d'une colonne --
+        ALTER TABLE nom_de_la_TABLE CHANGE ancien_nom_colonne nouveau_nom VARCHAR(valeur)
+
+
+4-- Afficher la colone fruit--
+    SELECT * FROM fruit;
+
+    --afficher les donnée d'une ou pliusieurs colonnes spécifique d'une TABLE --
+        SELECT nom_de_la_colonne, nom_de_la_colonne FROM nom_de_la_TABLE;
+
+    -- Afficher seulement le nom et la categorie de fruit--
+        SELECT nom, categorie FROM fruit;
+
+    --supprimer tout le contenu d'une TABLE -
+        DELETE FROM nom_de_la_TABLE; /!\ si vous faite cela vous effacerez tout le contenu de la TABLE /!\
+
+
+    -- supprimer une ligne de la table avec une condition --
+        DELETE FROM nom_de_la_TABLE WHERE condition;
+        DELETE FROM fruit WHERE categorie = 'Golden';   //pour supprimer tout l'ellement qui contient 'Golden' dans ça categorie TOUT LA LIGNE
+
+
+    --modifier/mettre a jour une colonne/cellule d'une table --
+        UPDATE nom_de_la_TABLE SET nom_de_la_colonne condition ='';
+        UPDATE fruit SET calibre ='7' WHERE id_fruit = '2';     
+
+    --modifier/mettre a jour plusieurs elements d'une colonne d'une table --
+        UPDATE nom_de_la_TABLE  SET nom_de_la_colonne, nom_de_la_colonne condition ='';
+        UPDATE fruit SET origine='espagne',  calibre ='4', prix='3.99' WHERE id_fruit = '3';
+
+    -- Ajouter une colonne a notre TABLE --
+        ALERT TABLE nom_de_la_TABLE ADD nom_de_la_colonne + type de donnée;
+        ALTER TABLE fruit ADD commerce VARCHAR (50);    
+
+
+
+        VARCHAR (100)   string limitée a 100 characteres
+        INT (2)         chiffre entier limité à un nombre a 2 chiffre max=99
+        FLOAT           chiffre a virgule , qui gere aussi les chiffres entiers
+        =>DATE          -a-m-j
+        =>DATETIME      -am-j H-m-s
+        =>TIMESTAMP     -Les secondes ecoulé depuis 1970-01-01 --
+
+
+    -- Operateur de comparaison --
+
+    =                       égale
+    <>                      Pas égale
+    !=                      Pas égale    
+    <                       Inferieur 
+    >                       Superieur
+    <=                      Inferieur ou égale à
+    >=                      superieur ou égale à
+    IN                      liste de plusieurs valeurs possible
+    NOT IN                  Pas entre
+    BETWEEN '' AND ''       recherche de valeurs comprise dans une interval donée (utile pour les nombre ou Dates)
+    NOT BETWEEN'' AND ''    qui n'est pas compris entre '' et ''
+    LIKE                    recherche en specifiant le début, le millieux ou la fin d'un mot -- LIKE 'L%' =commence par L --- '%l%' = avec un 'l' dedans ---'%l' = terminant par un 'l' -- - 'J%a%n'== commence avec un 'j', contient un 'a', termine par un 'n' --aucune difference entre majuscule et minuscule
+    IS NULL                 valeur est nulle
+    IS NOT NULL             valeur n'est pas nulle
+    ORDER BY                dans l'ordre de ""  DESC (descendant) ASC (ascendant)
+    ------------------------
+    SELECT *
+    FROM table
+    WHERE condition
+    GROUP BY expression
+    HAVING condition
+    { UNION | INTERSECT | EXCEPT }
+    ORDER BY expression
+    LIMIT count --jusqu'à 
+    OFFSET start --à partire de 
+    ----------------------------
+
+    -- selectionner une valeur comprise entre '' et '' -- // ici selectionner les bonbons avec l'id 2 à 6//--
+        
+        SELECT */nom_de_la_colones FROM nom_de_la_TABLE WHERE nom_de_la_colones BETWEEN 'val' and 'val'; //plus ou moins ça,
+        SELECT * FROM bonbons WHERE id_bonbon BETWEEN 2 AND 6;
+
+    -- Selectionner des données qui ne sont PAS compris entres deux valeurs  --  
+    
+        SELECT * FROM nom_de_la_TABLE WHERE nom_de_la_colonne NOT BETWEEN 'val' and 'val'; //plus ou moins ça,
+        SELECT * FROM bonbons WHERE id_bonbon NOT BETWEEN 1 AND 3;
+
+    -- Afficher par rapport à une valeur ---
+
+        SELECT * FROM nom_de_la_TABLE  WHERE nom_de_la_colonne = 'valeur'
+        SELECT * FROM stagiaires WHERE yeux = 'marron';
+
+
+
+    --- Afficher les données dans un ordre defini --
+    
+        SELECT * FROM nom_de_la_TABLE  WHERE nom_de_la_colonne = 'valeur' ORDER BY nom_de_la_colonne
+        SELECT * FROM stagiaires WHERE yeux = 'marron' ORDER BY prenom ;
+
+    --- Afficher les données dans un ordre decroissant --
+        
+        SELECT * FROM nom_de_la_TABLE  WHERE nom_de_la_colonne = 'valeur' ORDER BY nom_de_la_colonne DESC;
+        SELECT * FROM stagiaires WHERE yeux = 'marron' ORDER BY id_stagiaire DESC;
+
+    -- Afficher le stagiaires dont le prenom commence par un 'l' --    
+
+        SELECT * FROM stagiaires WHERE prenom LIKE 'l%';
+
+    -- Afficher le stagiaires dont le prenom contien un 'a' --    
+
+        SELECT * FROM stagiaires WHERE prenom LIKE '%a%';
+
+    -- Afficher le stagiaires dont le prenom ce termine par un 'n' --   
+
+        SELECT * FROM stagiaires WHERE prenom LIKE '%n';
+        
+    -- Afficher le stagiaires dont le prenom commence avec un 'j', contient un 'a', termine par un 'n' --
+        
+        SELECT * FROM stagiaires WHERE prenom LIKE 'j%a%n';
+
+
+    -- Afficher un nombre limitée de stagiaire/donnée
+        
+    --Afficher 2  stagiaires -- il affichera les 2 premiers --
+    
+        SELECT * FROM stagiaires LIMIT 2;
+    
+    --Afficher 2 stagiaire en sautant 1 -- L'OFFSET Permet de determiner le nombre de ligne sautée
+    
+        SELECT * FROM stagiaires LIMIT 1,2;  SAME WITH ---  SELECT * FROM stagiaires LIMIT 2 OFFSET 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ------------------------------------
+    EXO 1--
+0 se co a mysql -
+    mysql -u root -p 
+    -creér une base de donnée
+    CREATE DATABASE magasin;
+    -Créer une TABLE produit qui contient les colonnes suivantes
+    CREATE TABLE voiture/(ou autre) (id_car INT (3) PRIMARY KEY AUTO_INCREMENT NOT NULL, marque VARCHAR(50), model VARCHAR(60),couleur VARCHAR(30),prix FLOAT, date_vente DATE)  (DATE= année-mois-jour)
+
+
+
+
+    1   SELECT * FROM produits  ORDER BY Date_ajout DESC;
+    2   SELECT * FROM produits LIMIT 5;
+    3   SELECT * FROM produits LIMIT 5,5;
+    4   ALTER TABLE produits ADD date_vente DATE;
+    5   SELECT * FROM produits WHERE date_vente BETWEEN '2015-01-01' AND '2017-12-31';
+    6   SELECT * FROM produits LIMIT 2,5;
+    7   SELECT * FROM produits WHERE nom LIKE 'p%';
+
