@@ -1,0 +1,22 @@
+
+pseudo  = Pitt
+email  = Peter@hotmail.fr
+
+pseudo  = Pitt
+email  = Peter@hotmail.fr
+
+pseudo  = Pitt
+email  = Peter@hotmail.fr
+
+pseudo  = Pitta
+email  = machin@hotmail.fr
+
+pseudo  = Pittau
+email  = pi@hotmail.fr
+
+pseudo  = Po
+email  = po@hotmail.fr
+pseudo  = 
+email  = 
+pseudo  = Pitt
+email  = Peter@hotmail.fr

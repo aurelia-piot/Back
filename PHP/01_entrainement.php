@@ -734,8 +734,8 @@ echo implode(" - ", $perso);//implode() est une fonction predefinie qui rassembl
 //nous parlon de tableau multidimensionnel quand un tableau est contenu dans un autre tableau
 
 $tab_multi =array(
-    0=> array ("nom"=> "macron", "salaire"=>1), 
-    1=> array ("nom"=> "Lacroix", "salaire"=>15000)
+    0 => array("nom"=> "macron", "salaire"=>1), 
+    1 => array("nom"=> "Lacroix", "salaire"=>15000)
 
 );
 
@@ -748,12 +748,12 @@ echo $tab_multi[0]["nom"].'<hr>';
 
 
 
-foreach($tab_multi as $key => $tab)
+foreach($tab_multi as $key => $tab)//key contien [0] et tab contient les tableaux array
 {
  echo '<div class ="col-md-3 offset-md-5 alert alert-success text-dark mx-auto text-center ">';
     foreach($tab as $key2 => $value)
     {
-         echo "$key2 => $value<br>";
+         echo "$key2 => $value<br>"; //key2 contient "nom" et value contien "macron" au premier tour de boucle
     }
 echo '</div>'  ;
 }
@@ -779,6 +779,88 @@ for($i = 0; $i < count($tab_multi);$i++)// tant que ma variable i est inferieur 
 
 echo '</div>'  ;
 }
+
+
+
+
+
+
+?>
+
+
+
+<!-- -------------------------------------------------------------------------------------------------- -->
+<?php
+ echo '<hr> <h2 class="display-4 text-center">Superglobales</h2> <hr>';
+//Les superglobales sont des variables de type ARRAY, elles sont accessibles de partout, c'est à la fois dans l'espace globale et local, elle permettent de vehiculer des données
+
+/* 
+    $_SERVER        : vehicule les données lié au serveur
+    $_GET           : vehicule les données transmit dans l'URL
+    $_POST          : vehicule les données d'un formulaire
+    $_FILES         : vehicule les données  d'un fichier uploader
+    $_COOKIE        : vehicule les données d'un fichier cookie
+    $_SESSION       : vehicule les données  d'une session en cours
+
+
+    elles s'appelent toujours avec les signes $ suivi d'un _ et toujours en majuscule
+   
+ */
+echo '<pre>';print_r($_SERVER); echo'</pre>';
+
+
+
+
+
+?>
+
+
+
+<!-- -------------------------------------------------------------------------------------------------- -->
+<?php
+ echo '<hr> <h2 class="display-4 text-center">Classet et objet</h2> <hr>';
+ // un objet est un autre type de do,,ées. un pe à la maniere d'un ARRAY, il permet de regrouper des informations.
+ //cependant cela va beaucoup plus loin car on peu y declarer des variables (appeler : attribut ou propriete) mais aussi des fonction (appeler: methodes).
+
+ //une est un peu comme un point de construction qui regroupe des données
+
+ //par convention le premiere lettre du nom de la classe est toujours en majuscule
+ class Etudiant
+ {
+     //publique permet de preciser que l'element sera accessible de partout (il y a aussi protected et private)
+     public $prenom = "Peter";
+     public $age =23;
+     public function pays()
+        {
+             return 'france';
+        }
+ }
+
+ $objet = new Etudiant;//new permet d'instancier la classe Etudiant et d'en faire un objet. $objet est un exemplaire de ka classe Etudiant , c'est un enfznt de la classe
+ // pour exploiter les données declarées dans la classe , il faut créer une instance / un objet de la classe
+
+ echo'<pre>';var_dump($objet);echo'</pre>';
+
+//var_dump permet d'observer que l'on a bien un objet issu de la classe Etudiant à l'identifiant 1 et on observe aussi les proprietes (variables) declarees dans la classe
+
+ echo'<pre>';var_dump(get_class_methods($objet));echo'</pre>';
+
+//get_class_methods() permet d'afficher toutes les methoded (fonctions) issu de la classe Etudiant
+
+
+// on pioche dans un ARRAY avec le crochets '[]' / on pioche dans un objet toujours avec une fleche ' -> '
+
+ echo"Je m'appel : " . $objet ->prenom ."<hr>";
+
+//en piochant dans l'objet, cela nous permet d'atteindre la propriete $prenom declarer dans la classe
+
+ echo"Mon age est : " . $objet ->age ."<hr>";
+ echo"J'habite en : " . $objet ->pays() ."<hr>";
+
+
+
+
+
 
 
 

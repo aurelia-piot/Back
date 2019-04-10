@@ -77,8 +77,8 @@ BDD - Base De Donnée
     =                       égale
     <>                      Pas égale
     !=                      Pas égale    
-    <                       Inferieur 
-    >                       Superieur
+    <                       Inferieur   // apres
+    >                       Superieur  // Avant
     <=                      Inferieur ou égale à
     >=                      superieur ou égale à
     IN                      liste de plusieurs valeurs possible
