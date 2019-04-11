@@ -52,6 +52,13 @@
 <?php
 
 // 2.connexion a la BDD
+    foreach($_POST as $key =>$value)
+    {
+        $_POST[$key]=strip_tags(trim($value));//no passe en revue le formulaire en executant la fonction strip_tags sur chaque valeur saisie dans le formulaire
+        //trim() est une fonction predefinie qui supprime les espaces " " en debut et fin de chaine
+
+    }//a mettre au debut du code php pour etre bien pris en compte
+
  $bdd = new PDO('mysql:host=localhost;dbname=tchat','root','',array(PDO::ATTR_ERRMODE => PDO :: ERRMODE_WARNING, PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAMES utf8'));
         
  
@@ -88,34 +95,30 @@
 
 
                 POUR parer aus failles XSS, il existe plusieurs fonctions predefinies:
+
                 - strip_tags() :permet de supprimer les balises HTML
                 - htmlspecialchar() : permet de rendre inoffensives les balises HTML
                 - htmlentities() : permet de convertir les balise HTML en entités HTML
                 toujour a mettre en debut pour etre la premiere chose a etre pris en compte
         */
-foreach($_POST as $key =>$value)
-{
-    $_POST[$key]=strip_tags($value);//no passe en revue le formulaire en executant la fonction strip_tags sur chaque valeur saisie dans le formulaire
 
 
-}
+
+    // $req ="INSERT INTO commentaire (pseudo, dateEnregistrement,message)VALUES ('$pseudo',NOW(),'$message')";
+    // $resultat = $bdd->exec($req)
+    // echo $req;
 
 
-// $req ="INSERT INTO commentaire (pseudo, dateEnregistrement,message)VALUES ('$pseudo',NOW(),'$message')";
-// $resultat = $bdd->exec($req)
-// echo $req;
+    //le faite de preparer une requete SQL permet de parer aux injections SQL
+    $req ="INSERT INTO commentaire (pseudo, dateEnregistrement, message)VALUES(:pseudo, NOW(),:message)";
 
+    $resultat = $bdd->prepare($req);
 
-//le faite de preparer une requete SQL permet de parer aux injections SQL
-$req ="INSERT INTO commentaire (pseudo, dateEnregistrement, message)VALUE(:pseudo, NOW(),:message)";
+    $resultat->bindValue(':pseudo',$pseudo,PDO::PARAM_STR);
+    $resultat->bindValue(':message',$message,PDO::PARAM_STR);
+    $resultat->execute();
 
-$resultat = $bdd->prepare($req);
-
-$resultat->bindValue(':pseudo',$pseudo,PDO::PARAM_STR);
-$resultat->bindValue(':message',$message,PDO::PARAM_STR);
-$resultat->execute();
-
-echo $req;
+    echo $req;
 
 }
      
@@ -126,7 +129,7 @@ echo $req;
 
 $resultat = $bdd ->query("SELECT pseudo , message , DATE_FORMAT(dateEnregistrement, '%d/%m/%Y')AS datefr, DATE_FORMAT(dateEnregistrement, '%H/%i/%S') AS heurefr FROM commentaire ORDER BY dateEnregistrement DESC");
 echo '<div>Nombre de commentaire (s) : <trong>'.$resultat->rowCount()."</trong></div>"; // rowCount() est une methode PDOStatement qui retourne le nombre de ligne resultant de la requete SELECT
-while($commentaire = $resultat ->fetch(PDO::FETCH_ASSOC)){
+while($commentaire = $resultat ->fetch(PDO::FETCH_ASSOC)){ // SELECT retourne un objet PDOStatement
 
 
     //echo '<pre>' ; print_r($commentaire); echo'</pre>';   

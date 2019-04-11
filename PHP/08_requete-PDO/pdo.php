@@ -241,11 +241,11 @@ echo'<table class="table table-bordered text-center"><tr>';
     }
 echo'</tr>';
 
-while($employe =$resultat->fetch(PDO::FETCH_ASSOC))// $employe receptionne un tableau ARRAY par employes par tour de boucle
+while($employe =$resultat->fetch(PDO::FETCH_ASSOC))// $employe receptionne un tableau ARRAY  des infos par employes par tour de boucle
 {
     //echo"<pre>";print_r($employe);echo"</pre>";
     echo'<tr>';
-    //la boucle foreach permet de parcourir chaque tableau ARRAY de chaque employé
+    //la boucle foreach permet de parcourir chaque tableau ARRAY de chaque employé (pour recupere les infos relative "Peter" "m" ...ect)
     foreach($employe as $value)
     {
         echo "<td>$value</td>";
@@ -319,7 +319,8 @@ $resultat = $pdo->prepare("SELECT * FROM employes WHERE nom = :nom");//ici on pr
 echo"<pre>";print_r($resultat);echo"</pre>";// ici est retourner un objet PDOStatemant (donc des infos inutilisable)
 
 $resultat->bindValue(':nom','Piot',PDO::PARAM_STR);//bindValue() -->methode PDOStatement.Elle permet d'associer une valeur a un marqueur nominatif , ici ':nom'
-// la valeur du marqueur peut etre une variable
+// la valeur du marqueur peut etre une variable 
+//PDO:: PARAM_STR le type de donnée = (ici string)
 
 //arguments bindValue(nom_du_marque , valeur , type)
 //A ce stade la requete n'a toujours pas été executée
