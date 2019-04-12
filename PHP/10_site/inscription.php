@@ -1,5 +1,5 @@
 <?php
-require_once("include/init.php");
+require_once("include/init.php");//connexion a la bdd
 
 
 if($_POST){ //si on valide le formulaire, on entre dans le if
@@ -46,7 +46,7 @@ if(!$error){//si la variable $erreur est vide alors c'est que aucune erreur n'a 
    
    
    
-   foreach($_POST as $key => $value)
+   foreach($_POST as $key => $value) // va creer des indice pour chaque detail du post
    {
        if($key != 'mdp2')
        {
@@ -57,7 +57,10 @@ if(!$error){//si la variable $erreur est vide alors c'est que aucune erreur n'a 
    }
    
    $data_insert->execute();
-   
+   header("Location:connexion.php?action=validate");//header est une fonction predefinie qui permet d'effectuer une redirection de page / URL
+//attention aux espaces
+
+
 }
 
 

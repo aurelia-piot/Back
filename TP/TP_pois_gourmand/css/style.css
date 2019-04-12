@@ -1,0 +1,115 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    background: #a9f0d1;
+}
+
+.fond{
+    /* background: white; */
+    width: 70%;
+    background-image:url("../img/bg.jpg");
+    margin: 5rem auto;
+    padding: 2rem;
+}
+.fa-kiwi-bird{
+    color: #6c9986;
+}
+h1{
+    
+    text-align:left;
+}
+h2{text-align:center;margin-bottom: 1rem;margin-top:1rem;}
+h3{text-align:right;}
+
+p{margin-left:10px;
+margin-bottom: 5px;
+font-weight: 550}
+
+h1,h2,h3{
+    font-family:"Srisakdi";
+    font-weight: 900;
+}
+a{color:white;}
+
+.menu{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.m1{
+    background: white;
+    border: rgb(207, 207, 207) 1px solid;
+    border-radius: 12px;
+    width: 350px;
+    margin:2.5rem 3rem;
+    
+  overflow: hidden;
+  
+}
+
+.btn{
+    margin :15px 50px;
+    width: 70%;
+}
+
+  .img1{
+
+    
+    height: 200px;
+    width: 348px;
+    background-size: cover;
+}
+
+
+
+.commande{
+    background:white;
+    margin: 10px ;
+    border: 1px solid #c6d4ce;
+    border-radius: 10px;
+}
+
+
+.titrecom{
+    
+    background: #b9e6d3;
+    color:#1e332a;
+    padding:10px;
+}
+.titrecom2{text-align: left;}
+.contenu{
+    margin: 50px 0 20px 0 ;
+    padding: 0 0 0 0;
+}
+  .comimg1{
+
+ height: 200px;
+    width: 190px;
+    background-size: cover;
+    margin:0 0 0 40px ;
+}  
+.facture{
+    text-align:right;
+    color:grey;
+margin :70px 0 0 0; }
+
+.btnmenu{
+    width: 100%;
+    margin: 0;
+}
+
+.aimezvous{
+margin:120px auto;
+width: 340px;
+}
+.img5{
+background:url("../img/pg.jpg");                height: 270px;
+    width:340px;
+    background-size: cover;
+  
+}
+.textavis{  text-align:right;
+    color:grey;
+}
