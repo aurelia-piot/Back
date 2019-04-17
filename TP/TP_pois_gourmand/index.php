@@ -94,7 +94,7 @@
             <p>Rizotto aux asperges</p>
             <p>Panna cotta</p>
 
-            <button type="button" class="btn btn-info"> <a href="?menu=rome&prix=25&img=img/rome.jpg">Choisir</a> </button>
+          <a    class="btn btn-info" href="?menu=rome&prix=25&img=img/rome.jpg">Choisir</a> 
         </div>
 
         <div class="m1">
@@ -105,7 +105,7 @@
             <p>Cheese burger</p>
             <p>cheesecake</p>
 
-            <button  type="button" class="btn btn-danger"><a href="?menu=newyork&prix=23&img=img/nyork.jpg">Choisir</a></button>
+            <a  class="btn btn-danger" href="?menu=newyork&prix=23&img=img/nyork.jpg">Choisir</a>
         </div>
 
         <div class="m1">
@@ -116,7 +116,7 @@
             <p>Agneau byriani</p>
             <p>Lassi mangue</p>
 
-            <button type="button" class="btn btn-warning"><a href="?menu=delhi&prix=24&img=img/delhi.jpg">Choisir</a></button>
+            <a  class="btn btn-warning" href="?menu=delhi&prix=24&img=img/delhi.jpg">Choisir</a>
         </div>
 
         <div class="m1">
@@ -127,7 +127,7 @@
             <p>Poulet saté</p>
             <p>Perles de coco</p>
 
-            <button type="button" class="btn btn-success"><a href="?menu=hanoi&prix=28&img=img/hanoi.jpg">Choisir</a></button>
+            <a class="btn btn-success" href="?menu=hanoi&prix=28&img=img/hanoi.jpg">Choisir</a>
         </div>
 
 
@@ -156,24 +156,25 @@
 
 }
 
- if($_GET){
+
+
+//     foreach($_GET as $key => $value){
+
+//         // verification de la bonne reception des info
+        
+//     //     echo "<strong>$key</strong>: $value <br>";
+//     //     $menu = $value ;
+//     //  echo " $formule  $prix ";
+
+
+
+//      if( $value === $formule){
+          //echo "<div class='col-md-6 offset-md-3 alert-info alert'> ok</div>";
+            else{
+                  
 $img=$_GET['img'];
 $formule=$_GET['menu'];
 $prix=$_GET['prix'];
-
-    foreach($_GET as $key => $value){
-
-        // verification de la bonne reception des info
-        
-    //     echo "<strong>$key</strong>: $value <br>";
-    //     $menu = $value ;
-    //  echo " $formule  $prix ";
-
-
-
-     if( $value === $formule){
-          //echo "<div class='col-md-6 offset-md-3 alert-info alert'> ok</div>";
-            
 ?> 
 
 <div class="commande ">
@@ -187,7 +188,7 @@ $prix=$_GET['prix'];
         <p>Nous vous souhaitons une bonne dégustation.</p>
         <p>Un café gourmand vous est proposé pour terminer votre pause gourmande en douceur.</p>
         <small><p class="facture">- Votre facture sera de <?=$prix?> €</p></small>
-        <button type="button" class="btnmenu btn btn-success"> <a href="?">choisir un autre menu</a> </button>
+        <a  class="btnmenu btn btn-success" href="?">choisir un autre menu</a> 
     </div></div>
 
 </div>
@@ -196,7 +197,8 @@ $prix=$_GET['prix'];
 <div class="img5"></div>
 </div>
 
-<?php     }}} ?> 
+<?php     }
+//}} ?> 
 
 
 

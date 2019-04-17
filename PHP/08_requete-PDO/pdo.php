@@ -98,7 +98,7 @@ si il ya plusieurs resultats --> boucle !!
 fetchAll() retourne un tableau multitdimentionelle --- un tableau dans un tableau  
 */
 
-$result=$pdo->query("SELECT * FROM employes WHERE id_employes = 415");
+$result=$pdo->query("SELECT * FROM employes WHERE id_employes = 415"); //--retourne un objet PDOStatement qui est inutilisable en tant que tel --
 
 echo"<pre>";var_dump($result);echo"</pre>";
 echo"<pre>";print_r(get_class_methods($result));echo"</pre>";

@@ -14,7 +14,7 @@ session_start();
 
 //-CHEMIN
 
-define("RACINE_SITE",$_SERVER['DOCUMENT_ROOT'].'/PHP/10_site/');
+define("RACINE_SITE",$_SERVER['DOCUMENT_ROOT'].'/Back/PHP/10_site/');
 
 //$_SERVER['DOCUMENT_ROOT'] -- > C:/xampp/htdocs
 //lors de l'enregistrement d'image / photos, nous aurons besoins du chemin physique complet pour enregistrer la photo dans le bon dossier

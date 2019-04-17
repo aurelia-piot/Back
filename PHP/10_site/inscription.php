@@ -1,6 +1,6 @@
 <?php
 require_once("include/init.php");//connexion a la bdd
-
+if(internauteEstConnecte()){header("Location: profil.php");}
 
 if($_POST){ //si on valide le formulaire, on entre dans le if
 extract($_POST); //mtn --> $_POST['pseudo] = $pseudo
@@ -25,9 +25,10 @@ extract($_POST); //mtn --> $_POST['pseudo] = $pseudo
 $verif_pseudo = $bdd->prepare("SELECT * FROM membre WHERE pseudo = :pseudo");
 $verif_pseudo->bindValue(':pseudo',$pseudo,PDO::PARAM_STR);
 $verif_pseudo->execute();
+
+
+
 //si le resultat de la requete est supperieur a 0, cela veut dire qu'un pseudo est bien existant en BDD, alors on affiche un message d'erreur
-
-
 if($verif_pseudo->rowCount()>0)
 {
  $error.="<div class='col-md-6 offset-md-3 alert alert-danger text-center text-dark'>Pseudo - <strong>$pseudo</strong>- est deja pris</div>";
@@ -45,6 +46,12 @@ if(!$error){//si la variable $erreur est vide alors c'est que aucune erreur n'a 
      $data_insert = $bdd ->prepare("INSERT INTO membre ( pseudo, mdp,nom,prenom,email, civilite,ville ,code_postal,addresse) VALUES (:pseudo,:mdp,:nom,:prenom,:email,:civilite,:ville,:code_postale,:addresse)");
    
    
+ //   $_POST['mdp'] = password_hash($mdp, PASSWORD_DEFAULT);//on ne conserve jamais en claire les mot des passe dans  la BDD, password_hash permet de creer une clef de hachage
+    
+
+
+
+
    
    foreach($_POST as $key => $value) // va creer des indice pour chaque detail du post
    {
@@ -62,11 +69,7 @@ if(!$error){//si la variable $erreur est vide alors c'est que aucune erreur n'a 
 
 
 }
-
-
 echo $error; 
-
-
 
 }
 
@@ -159,6 +162,10 @@ require_once("include/header.php");
 </form>
 
 </div>
+
+
+
+
 
 
 
