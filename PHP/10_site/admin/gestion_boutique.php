@@ -58,6 +58,9 @@ if($_POST)
       if (isset($_GET['action'])&&$_GET['action']=='ajout')
       {
         $produit_insert = $bdd ->prepare("INSERT INTO produit (reference,categorie,titre,description,couleur,taille,public,photo,prix,stock) VALUES (:reference,:categorie,:titre,:description,:couleur,:taille,:public,:photo,:prix,:stock)");
+        $_GET['action']='affichage';
+        $validate .="<div class='col-md-4 offset-md-4 alert alert-success text-center text-dark' >Le Produit référence <strong> $reference</strong> a bien été ajouté</div>";
+
       }
       else
       {
