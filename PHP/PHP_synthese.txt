@@ -1,0 +1,855 @@
+------------------ 0000 -------------------------
+
+--  <?php   ouvrir une balise php pour y ecrire du php
+--  ?>      fermeture de le balise php
+--  <?=     raccourcie d'une ouverture de balise php + echo
+
+-------- COMMENTAIRES
+
+--/**/
+--//
+--#
+
+---------------------   AFFICHAGE
+
+--echo        echo est une instruction qui permet d'afficher dans le navigateur. Toutes les instructions se termine par un point virgule. Dans un echo nous pouvons mettre aussi du HTML.
+--print       print est une autre instruction d'affichage. Pas ou peu de difference avec echo.
+
+  => print_r();
+
+  => var_dump();
+
+--------------------- VARIABLES
+
+Définition : Une variable est un espace mémoire qui porte un nom et permettant de conserver une valeur. 
+
+--En PHP on déclare une variable avec le signe $.
+EX : --  $a = 127; // affectation de la valeur 127 à ma variable $a.
+
+echo gettype($a); // gettype() est une fonction prédéfinie qui indique le type d'une variable, ici il s'agit d'un integer (entier). 
+
+
+-- CONCATENATION
+
+--      echo $x . $y . '<br>'; -- le point de concaténation peut être traduit par 'suivi de'.
+
+--      echo $x, $y, '<br>'; -- Dans l'instruction echo, on peut séparer les éléments affiché par une virgule. Cette syntaxe est spécifique au echo et ne marche pas avec print.
+
+--      $prenom2 .= ' Marie'; -- .= opérateur combiné, il prend la valeur précédente pour y ajouter une seconde valeur.
+
+
+-- QUOTES
+
+--  $message = 'Aujourd\'hui'; -- on échappe les apostrophes dans les quotes simple avec \ (alt gr + 8).
+--  echo "$txt tout le monde <br>";
+-- Dans les guillemets, la variable est évalué : c'est sont contenu qui est affiché 'ici bonjour).
+        Dans les quotes simple, la variable n'est pas évalué : elle est traité comme du texte brute (affiche $txt). 
+
+
+---------------------------- REQUIRE & INCLUDE ------------------------
+
+require et include :
+pas de difference entre les deux ... sauf en cas d'erreur sur les nom du fichier:
+    -includde genere une erreur et continue l'execution du script
+    -require genere une erreur et stop l'execution du script
+    
+Le once verifie si le fichier a deja été inclus , si c'est le cas, il ne le ré-inclus pas.    
+
+
+------------------------------- FORMULAIRE  ----------------------------------
+
+
+-----------   CONTROLE FORMULAIRE
+
+  $error.=""; 
+  -- determination d'une variable qui va recupere les erreures (elle est determiner, mais vide et pas afficher)
+
+ if(iconv_strlen($_POST['pseudo']) < 2 || iconv_strlen($_POST['pseudo']) > 20)
+ --  iconv_strlen sert a mesurer la tailles de cactere de ()
+ --     si la taille de caractere du pseudo est plus petite qu 2 ou plus grande que 20 , alors :{  $error.="erreur" }
+
+ if(!is_numeric($_POST['codepostale']) || iconv_strlen($_POST['codepostale']) !== 5)
+ --     la taille du champ 'codepostale' est different de 5 caractere, ou si le champ n'est pas de type numerique, alors{  $error.="erreur" }
+
+ if($_POST['mdp'] != $_POST['mdp2'])
+ --     si la valeur du champ mdp est differente du champ mdp2 alors {  $error.="erreur" }
+
+ if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+ --     si le champ 'email' n'est pas (!) au bon format alors {  $error.="erreur" }
+
+if(empty($_POST['nom']) )
+--      si le champ 'nom' est vide ,alors{  $error.="erreur" }
+
+if(!preg_match('#^[0-9]{10}+$#',$_POST['phone']))
+--      ['caractere accepter'] { nombre de caracter accepeter}
+--      preg_match() : une expression reguliere (regex) est toujours entourer de dieze afin de preciser les options
+^ indique le debut de la chaine
+$ indique la fin de la chaine
++ est là pour dire que les caractere peuvent etre utilisés plusieurs fois
+
+
+if(empty($error))
+--      si ma variable qui recupere les message d'erreur est vide alors cela veut dire que le formulaire est valide {}
+
+on stock tout les messages d'erreurs dans la variable $error , si cette variable est vide, cela veut dire que nous somme entrer dans aucune condition IF et que donc l'internaute a bien rempli les champ controlés, on affiche donc un message de validation 
+
+
+echo $error; -- on fait un echo pour pouvoir afficher les messages d'erreures
+
+
+
+------ ATT
+ le control est a ecrire au dessus du formulaire a verifier (en vrais je sais pas, mais c'est mieux comme ça)
+
+
+
+----------------------------     $_POST      -------------------------------
+
+echo '<pre>' ; print_r($_POST); echo'</pre>';
+
+print_r($_POST)permet d'observer les données saisie dans le formulaire qui vont se stocker directement dans la superglobale $_POST, les indices correspondent aux attributs 'name' du formulaire HTML*
+
+  if($_POST){}
+  --    sans la condition IF, au premier chargement de la page, nous avons donc 2 erreures undefined, c'est du au fait que le formulaire n'a pas ete validé et donc les indices 'email" et "mdp" ne sont pas reconnu
+  --    si la condition IF est verifiée n si elle renvoi 'true', cela veut dire que l'on a soumit le formulaire et les indices 'email' et 'mdp' sont bien detectés et seront afficher
+
+  --  on extrait les valeurs une par  une en passant par la superglobale $_POST en crochetant aux differents indices
+
+  on utilise cette methode pour passer en revue toutes les informations recupere dans le formulaire
+
+  on verifie si on a bien cliqué sur le bouton submit qui a pour attribut name 'submit' , si nous avions plusieurs formulaire sur la meme page , la condition permet de differencier quel formulaire a ete valider
+if(isset($_POST['submit'])){}
+
+ ---- ATT
+
+il faut biensur determiner la methode "post" dans la balise form
+et donnée un nom avec "name" a chaque input ou "value" si c'est a choix multiple.
+
+
+--------------------------- $_GET -----------------------------------
+dans un formulaire la methode $_GET ce determine par la methode "action" qui va envoyer les données saisie a la page inscrit dans cette methode
+(je sais plus si elle redirige direct vers la page)
+EX  <form class ="col-md-6 offset-md-3" method="post" action="../post/formulaire4.php">
+
+il n'y a plus qu'à effectuer un print_r de $_POST sur cette page pour y recuperer les informations
+
+--------------------- fopen/fwrite/fclose -------------
+
+si nous n'avions pas de BDD et que nous voudrions recupérer les emails des visiteur du sites, il serait interessant de les enregistrers dans un ficher .txt
+--  il existe des fonctions en php qui permettent de le faire
+-- fopen() | fwrite() | fclose()
+
+
+$fichier = fopen("liste.txt", "a"); 
+-- fopen() en mode 'a' permet de creer un fichier  (si il n'existe pas deja) et de l'ouvrir
+
+fwrite($fichier, "pseudo  = ".$_POST['pseudo']."\r\n". "email  = " .$_POST['email']."\r\n"); 
+-- fwrite()permet d'ecricre dans le fichier representer par $fichier
+--"\r\n" => sequence d'echappement pour passer a la ligne dans le fichier .txt
+
+
+fclose($fichier); -- fclose() qui n'est pas indispensable , permet de fermer le fichier et ainsi libérer de la ressource
+
+---- LIRE LE FICHIER (txt)
+
+puisque nous avons reussis a introduire des information dans un fichier .txt, il serait interessant de faire l'invere et de lire le contenu d'un fichier .txt
+
+$nom_fichier= "liste.txt";
+$fichier = file($nom_fichier); 
+--  ici la fonction file() fait tout le travail, elle retourne chaque ligne du fichier liste.txt a des indices différents d'un tableau ARRAY
+
+echo '<pre>';print_r($fichier);echo'</pre>';
+
+-------------- RECEPTION DU FORMULAIRE PAR MAIL -----------
+
+apres avoir valider la formulaire ->
+
+//1er argument
+$destinataire = "aureliapiot@hotmail.fr";
+
+
+// 2eme argument
+$sujet= $_POST['objet'];
+
+
+//3eme argument
+$message = $_POST['message'];
+
+//4eme argument
+
+//c' est un standard internet qui étend le format de données des courriels pour supporter des textes en différents codage des caractères autres que l'ASCII, des contenus non textuels, des contenus multiples, et des informations d'en-tête en d'autres codages que l'ASCII.
+$entetes = "MIME-Version 1.0\n";
+
+//entetes exepediteur , Toujours "From"(et non "de" par exemple) et pas autres choses
+$entetes .= "From:$_POST[email]\n"; // lorsque l'on est entre dbl quote , on a pas besoin des simples quote dans les crochets
+//entetes addresse de retour /destinataire
+$entetes .= "Reply-to: aureliapiot@hotmail.fr\n"; 
+
+-- priorité urgente
+$entetes .= "X-priority: 1\n"; 
+
+-- type de contenu html
+$entetes .= "content-type: text/html; charset=utf-8\n"; 
+
+
+mail($destinataire,$sujet,$message,$entetes);         
+--fonction predefinie permettent l'envoi de l'email / toujour 4 argument ; destinataire /sujet/ message / expediteur.
+                //l'ordre est crucial sinon le test ne fonctionne pas
+
+
+--------------------$_GET-----------------------------------
+
+echo '<pre>';print_r($_GET);echo'</pre>';
+--  les information envoyer dans l'url sont automatiquement stockées dans la superglobale $_GET, cela retourne un tableau ARRAY associatif
+
+Lorsque l'on envoie des information dans l'url, le ? permet de delimiter les argument, et l'url de destination, puis un indice = une valeur ajouter avec le signe &
+EX =  <a href="fiche_produit.php?id=1&type=tshirt&couleur=rouge&prix=15">
+
+------------  FOREACH   ------
+
+foreach($_POST as $tab)
+        {
+    --  on parcour la superglobale $_POST de type ARRAY avec une boucle foreach
+
+          echo '<div class ="col-md-3 offset-md-5 alert alert-info text-dark mx-auto text-center ">';
+    
+          echo $tab;
+    
+          echo '</div>'  ;
+        }
+
+foreach($_POST as $tab =>$value)
+{
+--    donne le nom de la table et ça valeur
+}
+
+----------GET---
+
+echo '<div class ="col-md-3 offset-md-5 alert alert-info text-dark mx-auto text-center ">';
+    foreach($_GET as $key => $value)
+        {
+            if($key != 'id') -- si l'indice est different de "id" alors on affiche l'indice en fonction de la valeur de la superGlobale $_GET (ARRAY ) c'est ce qui permet d'exclure l'indice "id"
+            {
+               echo "<strong>$key</strong>: $value <br>"; 
+            }
+        }
+
+echo '</div>'  ;
+
+
+--------------------- COOKIE -------------------
+
+le coockie est un fichier qui permet de stocker des données qui ne sont pas sensible, c'est pour cela qu'il est conserver coter client et non coter serveur
+
+Creation fichier cookie
+$un_an = 365*24*3600; --correspond à une année en seconde, ce sera la durée de vie du cookie
+
+
+setcookie("pays" , $pays, time()+$un_an);// permet de creer un fichier cookie qui est conserver coté client , cet a dire sur l'ordinateur de l'internaute
+ 3 arguments : nom du cookie / valeur du cookie / durée de vie du cookie
+
+echo "<pre>";print_r($_COOKIE);echo"</pre>";
+
+---------
+if(isset($_GET['pays'])) // on entre dans la condition dans le cas ou l'on a cliqué sur un lien et donc envoyé un pays dans l'url
+{
+    $pays = $_GET['pays'];
+}
+elseif(isset($_COOCKIE['pays'])) // on entre dans le elseif dans le cas ou un cookie a ete creer et que par example  nous revenons sur le site 3 mois plus tard, la valeur du cookie sera afficher
+{
+    $pays = $_COOCKIE['pays'];
+}
+else
+{
+    $pays ='fr'; // lorsque l'on va sur le site pour la premiere fois et qu'il n'y a pas de cookie encor creer , le site est par default en fr 
+}
+
+switch($pays)
+{
+    case 'fr':
+         echo " vous etes sur un site en français <br>";
+         break;
+
+    case 'es':
+        echo " vous etes sur un site en espagnol <br>";
+        break;
+
+    case 'an':
+        echo " vous etes sur un site en anglais <br>";
+        break;
+
+    case 'it':
+        echo " vous etes sur un site en italien <br>";
+        break;
+
+
+}
+----------------------------SESSION-----------------------------
+
+une session est un moyen simple de garder des variables accessibles quelque soit la page ou l'on se trouve 
+--  par exemple , sans une session active , nous ne pourrions naviguer sur un site tout en restant connecté
+-- Les sessions sont conservers coté serveur puisqu'elles contienent des données sensible tel que votre email, nom , prenom, ect...
+
+session_start(); 
+-- permet de créer un fichier session se trouvant dans le dossier c:/xamp/tmp
+qui est le dossier des fichier temporaire dans le serveur
+
+on stock des données dans la session en creant des indices au tableau ARRAY
+$_SESSION['pseudo']= 'pitt';
+$_SESSION['nom']="PIOU";
+$_SESSION['prenom']="Petter";
+
+echo"<pre>";print_r($_SESSION); echo"</pre>";
+
+--  vider une partie de la session
+
+unset($_SESSION['prenom']);
+
+echo"<pre>";print_r($_SESSION); echo"</pre>";
+
+
+-- supprimer la session 
+            //supprime le fichier du dossier tmp
+ session_destroy();
+
+-----------------------------------------
+--------------- REQUETE PDO ------------------
+PDO est une class predefinie en PHP qui permet de se conecter à une base de donnée, cette classe possede des propres methodes (fonctions) qui nous permettrons par exemples de formuler et d'executer une requete SQL
+
+
+ -- class PDO
+             {
+                 //methodes (fonctions)
+                 //proprietes (variables)
+
+                 EX :public function query()
+            {
+            code/ traitement ....
+            }
+            }
+
+$pdo = new PDO('mysql:host= nom du serveur ;dbname= nom de la BBD','ID','',array((constente)option pdo en cas de mal connexion ,PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAME utf8'))            
+
+$pdo est l'objet qui permet d'interagire, d'interroger la BDD
+
+arguments : 1 (serveur + BDD) / 2 (identifiant) / 3 (mdp) / 4 (options PDO)
+
+echo'<pre>';var_dump($pdo);echo'</pre>'; //affiche l'objet PDO
+
+ echo'<pre>';print_r(get_class_methods($pdo));echo'</pre>'; // affiche les methodes issu de la classe predefinie PDO
+
+
+// $true n'etant pas definie , on entre pas dans la condition
+if(isset($true)) //permet de ne plus avoir d'insert a chaque rechargement de la page
+{
+    $resultat = $pdo -> exec("INSERT INTO employes ( prenom, nom, sexe, service, date_embauche, salaire) VALUE ('Peter', 'Piot', 'm', 'informatique', '2019-04-09', 2200);");
+        echo "Nombre d'enregistrement affecté(s) par l'INSERT : $resultat <br>";
+        echo "Dernier ID généré : ". $pdo ->lastInsertId(). '<hr>';
+}
+le fleche permet d'aller piocher une methode
+
+        exec() retourne le nombre d'enregistrement affecter par la requette (un INT)
+
+EXEC() est une methode issue de la classe predefinie PDO, elle permet de formuler et executer des requetes SQL, c'est en argument (entre les parenthese de la methode) que l'on envoi la requete
+
+ EXEC() est prevu pour des requetes ne retournant pas de jeu de resultat (INSERT / UPDATE / DELETE)
+
+$resultat = $pdo -> exec('UPDATE employes SET salaire = "1200" WHERE id_employes = "350" ;');
+ echo "Nombre d'enregistrement affecté(s) par L'UPDATE : $resultat <br>";
+
+$resultat = $pdo -> exec(' DELETE FROM employes  WHERE id_employes = "350" ;');
+        echo "Nombre d'enregistrement affecté(s) par Le DELETE : $resultat <br>";
+
+------------
+Requete selection -> query() -> retour objet PDOStatement (inexploitable)
+pour exploiter le resultat -> associe une methode -->fetch() / fetchAll()--> retourne un tableau ARRAY
+si il ya plusieurs resultats --> boucle !!
+
+fetchAll() retourne un tableau multitdimentionelle --- un tableau dans un tableau
+-------------------
+
+EX -- $result=$pdo->query("SELECT * FROM employes WHERE id_employes = 415"); //--retourne un objet PDOStatement qui est inutilisable en tant que tel --
+
+echo"<pre>";var_dump($result);echo"</pre>";
+echo"<pre>";print_r(get_class_methods($result));echo"</pre>";
+
+$employe = $result->fetch(PDO::FETCH_ASSOC);//retourne un tableau ARRAY indexé avec le nom des champs
+----PDO::FETCH_NUM retourne un tableau ARRAY indexé numeriquement
+----PDO::FETCH_BOTH retourne un tableau ARRAY indexé a la fois numeriqueùent et avec le nom des champs
+-- il n'est pas possible d'associer 2 fois la meme methodes sur le meme resultat
+
+echo"<pre>";print_r($employe);echo"</pre>";
+
+---------------------
+QUERY() est un methode issu de la classe PDO qui permet de formuler et d'executer des requetes SQL. Elle est prevu pour des requetes retournant un jeu de resultat (SELECT)
+Lorsqu'on execute une requete de selection, on obtien toujours en retour un autre objet, issu d"une autre classe : PDOStatement.
+Cette classe possede des propres proprietes et methode
+--
+La methode fetch() permet de rendre le resultat exploitable sous forme de donnée de tableau ARRAY
+
+------------------- WHILE
+
+while($employes = $resultat->fetch(PDO::FETCH_ASSOC))
+{
+
+    //echo"<pre>";print_r($employes);echo"</pre>";
+
+echo '<div class="col-md-4 offset-md-4 mx-auto alert alert-info text-center">';
+echo $employes['nom'].'<hr>';
+-- pour chaque tour de boucle , donc pour chaque tableau ARRAY, on va crocheter au different indices
+echo $employes['prenom'].'<hr>';
+echo $employes['service'].'<hr>';
+echo $employes['salaire'].'<hr>';
+echo $employes['sexe'];
+echo'</div>';
+}
+-----
+$resultat = $pdo -> query("SELECT * FROM employes ");
+
+$donnees = $resultat->fetchall(PDO::FETCH_ASSOC);
+--fetchall() retourne un tableau multi dimensionnel avec chaque tableau (de chaque employé) indexé numeriquement
+
+echo"<pre>";print_r($donnees);echo"</pre>";
+-----------
+pour afficher successivement les données de chaque employé a l'aide de boucle  foreach 
+-------------------
+foreach($donnees as $key =>$tab){
+        
+  echo '<div class="col-md-4 offset-md-4 mx-auto alert alert-info text-center">';
+        
+    -- cette boucle foreach permet de passer en revue chaque tableau de chaque employé
+    foreach($tab as $key2 => $value)
+    {
+        echo "$key2 : $value <hr>";
+    }
+
+  echo'</div>';
+}
+
+---------------------
+
+Afficher la liste des bases de données, puis les mettre dans une liste ul li
+----------------------
+
+$datab = $pdo -> query("SHOW DATABASES;");
+
+echo'<ul class="list-group col-md-4 offset-md-4 ">';
+
+    while($dtbase = $datab->fetch(PDO::FETCH_ASSOC))
+    // $dtbase receptionne un tableau ARRAY par tour de boucle contenant les information d'une BDD
+        { 
+            //echo"<pre>";print_r($dtbase);echo"</pre>";
+            echo'<li class="list-group-item ">'.$dtbase['Database'].'</li>';
+            //on va crochetr a l'indice [Database] pour afficher le nom de la BDD
+        }
+
+echo'</ul>';
+
+------------------------ PDO : QUERY + TABLE
+
+------ FETCH
+$resultat = $pdo -> query ("SELECT * FROM employes");
+
+/*
+CloumnCount() est une methode issue de la classe PDOStatement qui retourne le nombre de colonne selectionnés via la requete de selection, dans notre cas retourne integer 7, donc la boucle for tourne 7 fois, autant de fois qu'il y a de colonnes
+
+getColumnMeta() est une methode issue de la class PDOStatement qui permet de recolter les informations des champs/colonne selectionnés
+
+
+*/
+
+
+echo'<table class="table table-bordered text-center"><tr>';
+    for($i = 0 ; $i < $resultat ->columnCount();$i++)
+    {
+        $colonne = $resultat->getColumnMeta($i);
+       //echo"<pre>";print_r($colonne);echo"</pre>";
+        echo"<th>$colonne[name]</th>"; // on va crocheter a l'indice 'name' pour afficher en entete le nom de la colonne par tour de boucle
+    }
+echo'</tr>';
+
+while($employe =$resultat->fetch(PDO::FETCH_ASSOC))// $employe receptionne un tableau ARRAY  des infos par employes par tour de boucle
+{
+    //echo"<pre>";print_r($employe);echo"</pre>";
+    echo'<tr>';
+    //la boucle foreach permet de parcourir chaque tableau ARRAY de chaque employé (pour recupere les infos relative "Peter" "m" ...ect)
+    foreach($employe as $value)
+    {
+        echo "<td>$value</td>";
+    }
+    
+    
+    echo'</tr>';
+}
+
+
+echo'</table>';
+
+---------------- FETCH ALL
+
+$resultat = $pdo -> query("SELECT * FROM employes ");
+
+$donnees = $resultat->fetchall(PDO::FETCH_ASSOC);
+--Sfetchall() retourne un tableau multi dimensionnel avec chaque tableau (de chaque employé) indexé numeriquement
+
+
+
+//echo"<pre>";print_r($donnees);echo"</pre>";
+echo'<table class="table table-bordered text-center"><tr>';
+    
+foreach($donnees[0] as $key =>$value)
+{
+    echo'<th>'.$key.'</th>';
+    --  ici on crochete au premier indice du tableau multi pour recuperer les indices et les stockés dans les entetes<th></th>
+}
+
+echo'</tr>';
+foreach($donnees as $tab)
+{
+    echo'<tr>'; 
+    -- on créer une ligne par employé
+    --la boucle foreach permet de parcourir chaque tableau ARRAY de chaque employés
+    
+    foreach($tab as $info)
+    {
+        echo"<td>$info</td>";
+    }
+    
+    
+    echo'</tr>';
+}
+
+echo'</table>';
+
+
+----------------------  PDO : PREPARE + BINDVALUE + EXECUTE
+
+les requetes preparees permettent de formuler une seul fois la requete et de l'executee autant de foi que souhaité
+
+les requete preparees permettes de parer aux injection SQL, cela permet de proteger le requetes SQL
+
+3 cycles dans une requete : analyse / interpretation / execution
+
+
+$resultat = $pdo->prepare("SELECT * FROM employes WHERE nom = :nom");
+--ici on prepare la requete mais a aucun moment on ne l'execute
+--  :nom --> marqueur nominatif que l'on peux comparer à une boite ou un tampon
+
+echo"<pre>";print_r($resultat);echo"</pre>";
+-- ici est retourner un objet PDOStatemant (donc des infos inutilisable)
+
+$resultat->bindValue(':nom','Piot',PDO::PARAM_STR);
+--bindValue() -->methode PDOStatement.Elle permet d'associer une valeur a un marqueur nominatif , ici ':nom'
+-- la valeur du marqueur peut etre une variable 
+--PDO:: PARAM_STR le type de donnée = (ici string)
+
+--arguments bindValue(nom_du_marque , valeur , type)
+--A ce stade la requete n'a toujours pas été executée
+
+$resultat->execute();
+-- methode PDOStatement / permet d'executer la requete preparee
+
+echo"<pre>";print_r($resultat);echo"</pre>";
+
+$nom = $resultat->fetch(PDO::FETCH_ASSOC);
+
+echo"<pre>";print_r($nom);echo"</pre>";
+
+--
+echo'<div class="col-md-4 offset-md-4 mx-auto alert alert-success text-center">';
+foreach($nom as $key => $value)
+    {
+        echo "$key : $value <hr>";
+    }
+
+echo '</div>'
+--
+-- la valeur du marqueur peut etre une variable 
+-- on change la valeur du marqueur sans avoir a reformuler la requete SQL
+   -- a tout moment on peut changer la valeur du marqueur ':nom' sans a avoir a reformuler la requete sql 
+---------------------------------------
+EXO 
+  1.Realiser un formulaire correspondant a la table 'employes' de la BDD 'entreprise' (sauf id_employes)
+    
+    2.Controler en PHP que l'on reception bien tout les champs du formulaire
+    
+    3.connexion BDD
+    
+    4.Traitement PHP/SQL permettant l'insertion d'un employé a partir du formulaire
+
+
+    1= formulaire
+
+$bdd = new PDO('mysql:host=localhost;dbname=entreprise','root','',array(PDO::ATTR_ERRMODE => PDO :: ERRMODE_WARNING, PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAMES utf8'));
+
+
+if($_POST){ // si on valide le formulaire , on entre dans la condition
+
+
+ echo '<pre>' ; print_r($_POST); echo'</pre>';
+      echo '<hr>'  ;
+
+
+$resultat = $bdd-> exec("INSERT INTO employes( prenom, nom, sexe, service, date_embauche, salaire) VALUE('$_POST[prenom]',' $_POST[nom]',' $_POST[sexe]',' $_POST[service]',' $_POST[date_embauche]',' $_POST[salaire]');");
+
+//on utilise la super globale $_POST pour aller crocheter a chaque champ du formulaire afin de recupere sa valeur
+
+
+ echo"Nombre d'enregistrement affecté(s) par l'INSERT : $resultat <br>";
+ echo "Dernier ID généré : ". $bdd ->lastInsertId(). '<hr>';
+ echo '<div class ="col-md-6 offset-md-3 alert alert-success text-center"> l\'employé <strong>'.$_POST['nom'].'</strong> a bien ete enregistré !</div>';
+     
+
+}
+
+---------------------------------------------------------------------------
+--------------TCHAT-----------------------------
+ exercice : espace dialogie (tchat)
+    1.modelisation et creation
+        BDD    : tchat
+        table  : commentaire
+                 id_commentaire     //INT(3) PK - AI
+                 pseudo             //VARCHAR(20)
+                 dateErengistrement //DATETIME
+                 message            //TEXT
+
+2. Connexion a la BDD
+3. Creation d'un formulaire HTML (pour l'ajout de message)                 
+4. Recuperation et affichage des saisien en PHP ($_POST)
+5. Requete SQL d'enrengistrement (INSERT)
+6. Affichage des messages
+
+--------------------------
+1 .CREATE DATABASE tchat;
+    CREATE TABLE commentaire (id_commentaire INT(3), pseudo VARCHAR(20),dateEnregistrement DATETIME,message TEXT);
+
+
+/ 2.connexion a la BDD
+    foreach($_POST as $key =>$value)
+    {
+        $_POST[$key]=strip_tags(trim($value));
+        --no passe en revue le formulaire en executant la fonction strip_tags sur chaque valeur saisie dans le formulaire
+        --trim() est une fonction predefinie qui supprime les espaces " " en debut et fin de chaine
+
+    }//a mettre au debut du code php pour etre bien pris en compte
+
+ $bdd = new PDO('mysql:host=localhost;dbname=tchat','root','',array(PDO::ATTR_ERRMODE => PDO :: ERRMODE_WARNING, PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAMES utf8'));
+
+
+//  4.Recuperation et affichage des saisien en PHP ($_POST)
+ extract($_POST);
+ -- permet de tranformer chaque indice du formulaire en variable
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ if($_POST){
+$req ="INSERT INTO commentaire (pseudo, dateEnregistrement, message)VALUES(:pseudo, NOW(),:message)";
+
+    $resultat = $bdd->prepare($req);
+
+    $resultat->bindValue(':pseudo',$pseudo,PDO::PARAM_STR);
+    $resultat->bindValue(':message',$message,PDO::PARAM_STR);
+    $resultat->execute();
+
+    echo $req;
+
+}
+
+if (isset ($_POST['valider'])){
+        echo "<hr>$pseudo <br>$message<hr>"; 
+        }
+
+$resultat = $bdd ->query("SELECT pseudo , message , DATE_FORMAT(dateEnregistrement, '%d/%m/%Y')AS datefr, DATE_FORMAT(dateEnregistrement, '%H/%i/%S') AS heurefr FROM commentaire ORDER BY dateEnregistrement DESC");
+
+echo '<div>Nombre de commentaire (s) : <trong>'.$resultat->rowCount()."</trong></div>";
+-- rowCount() est une methode PDOStatement qui retourne le nombre de ligne resultant de la requete SELECT
+
+
+while($commentaire = $resultat ->fetch(PDO::FETCH_ASSOC)){ 
+    -- SELECT retourne un objet PDOStatement--
+
+    //echo '<pre>' ; print_r($commentaire); echo'</pre>';   
+    echo'<div class="col-md-8 offset-md-2 alert alert-secondary">';
+    
+    echo"<div><em> Par $commentaire[pseudo], le $commentaire[datefr] à $commentaire[heurefr]  </em></div><hr>";
+    echo "<div class='text-justify'>$commentaire[message]</div>";
+    echo'</div>';
+    
+    echo '<hr>'  ;   
+
+}
+
+
+------------------- Injection SQL: -------
+        ok'); DELETE FROM commentaire;(
+        -------------------------
+            FAILLE XSS 
+------------------------------------
+            <script type="text/javascript">
+            var point = true;
+            while(point == true)
+            alert("j'ai planté ton site !!")
+            </script>
+-------------------------------------
+            <style>
+            body{
+                display : none;
+            }
+            </style>
+--------------------------------
+ POUR parer aus failles XSS, il existe plusieurs fonctions predefinies:
+
+     - strip_tags() :permet de supprimer les balises HTML
+     - htmlspecialchar() : permet de rendre inoffensives les balises HTML
+     - htmlentities() : permet de convertir les balise HTML en entités HTML
+toujour a mettre en debut pour etre la premiere chose a etre pris en compte
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+---------------- A VOIR "SITE" Pour le tout -----------------------------
+init de "site"
+
+
+//connexion BDD
+
+
+$bdd = new PDO('mysql:host=localhost;dbname=site','root','',array(PDO::ATTR_ERRMODE => PDO :: ERRMODE_WARNING, PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAMES utf8'));
+
+//--SESSION
+
+session_start();
+
+
+
+//-CHEMIN
+
+define("RACINE_SITE",$_SERVER['DOCUMENT_ROOT'].'/Back/PHP/10_site/');
+
+//$_SERVER['DOCUMENT_ROOT'] -- > C:/xampp/htdocs
+//lors de l'enregistrement d'image / photos, nous aurons besoins du chemin physique complet pour enregistrer la photo dans le bon dossier
+
+//echo RACINE_SITE;
+
+
+define("URL",'http://localhost/Back/PHP/10_site/'); <---chemin
+//echo URL;
+//cette constante servira entre autre a enregistrer l'URL d'une photo/image dans la bdd, on ne conserve jamais la photo en elle meme; ce serait trop lourd pour la BDD
+
+//--VARIABLES
+
+
+$error = '';        //message d'erreur
+$validate='';       //message de validation
+$content='';        //permettra de placer du contenu où l'on souhaite
+
+
+
+//--FAILLES XSS
+foreach($_POST as $key => $value)
+{
+    $_POST[$key] = strip_tags(trim($value));
+}
+
+foreach($_GET as $key => $value)
+{
+    $_GET[$key] = strip_tags(trim($value));
+}
+//strip_tags() -->supprime les balises HTML
+//trim() -> supprime les espaces en debut et fin de chaine
+
+//------------INCLUSIONS
+//on inclu directement le fichier fonction.php dans init, cela evitera de l'appeler sur chaque page
+require_once("fonction.php");
+
+
+
+----------- FONCTIONS 
+function internauteEstConnecte()//fonction qui indique si le membre est connecté
+{
+    if(!isset($_SESSION['membre'])){return false;}// si l'indice 'membre' n'est pas definit dans la session, cela veut dire que l'internaute n'est pas passé par la page connexion, donc n'est pas connecté
+    
+    else{return true;}//si l'indice 'membre' est bien definit, on retourne true
+}
+
+
+
+
+//------------------FONCTION ADMIN ---------------------------------//
+
+
+Function internauteEstConnecteEtEstAdmin()
+    {
+        //si la seesio du membre est definit et que son statut est à 1, cela veut dire qu'il est bien ADMIN et qu'il est bien connecté
+        if(internauteEstConnecte() && $_SESSION['membre']['statut']== 1)
+        {
+            return true;
+        }
+        else{return false;}    
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

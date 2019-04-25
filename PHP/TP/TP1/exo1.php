@@ -1,4 +1,8 @@
+<?php
+extract($_POST);
 
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Document</title>
+    <title>Exo 1p1</title>
+    <!-- Hello Peter -->
 </head>
 <body>
 
@@ -149,9 +154,9 @@ if(isset($_POST['valider2'])){
 
 <div class="offset-md-5 col-md-2">
 <ul>
-<li><a href="?genre=homme">Homme</a></li>
-<li><a href="?genre=femme">Femme</a></li>
-<li><a href="?genre=neutre">Neutre</a></li>
+<li><a href="exo1-2.php?genre=homme" target="blanc">Homme</a></li>
+<li><a href="exo1-2.php?genre=femme"target="blanc">Femme</a></li>
+<li><a href="exo1-2.php?genre=neutre" target="blanc">Neutre</a></li>
 </ul>
 <hr>
 <?php
@@ -168,11 +173,198 @@ if(isset($_GET['genre'])):
 
 ?>
 <p>Vous êtes <?=$genre?> ?</p>
-</div>
+
 <?php endif;?>
+</div>
+<!-- ---------------------------------------------------------------------------------------------------- -->
+  <hr>
+  <hr>
+
+ <h3 class="text-center display-4">EXO 2.3</h3>
+<div class="offset-md-2 col-md-8 text-center">Créer une page 1 avec plusieurs liens (contexte : carte de restaurant) : pizza, salade, viande, poisson. Récupérer le plat cliqué (dans la page 1) et afficher-le sur la page 2 en adressant un message correspondant au choix de l'internaute. Exemple si l'on a cliqué sur pizza : "Vous avez choisi de manger 1 pizza" .
+</div><hr>
 
 
 
+<div class="offset-md-5 col-md-2">
+<ul>
+<li><a href="exo1-2.php?commande=pizza" target="blanc">pizza</a></li>
+<li><a href="exo1-2.php?commande=salade" target="blanc">salade</a></li>
+<li><a href="exo1-2.php?commande=viande" target="blanc">viande</a></li>
+<li><a href="exo1-2.php?commande=poisson" target="blanc">poisson</a></li>
+
+</ul>
+<?php if(isset($_GET['commande'])):?>
+<hr>
+<p>Vpus avez choisi de manger 1 <?=$_GET['commande']?>?</p>
+<?php endif;?>
+</div>
+
+
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+  <hr>
+  <hr>
+ <h2 class="text-center display-4">EXERCICE 3 : BOUCLE</h2>
+ <h3 class="text-center display-4">EXO 3.1</h3>
+<div class="offset-md-2 col-md-8 text-center">Afficher des nombres allant de 1 à 100.</div><hr>
+
+
+
+<?php 
+$chiffre = 0;
+echo'<div class="offset-md-3 col-md-6">';
+for($chiffre; $chiffre<= 100; $chiffre++){
+
+echo $chiffre.'  ';
+
+
+}
+echo '</div>';
+?>
+
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+  <hr>
+  <hr>
+ <h3 class="text-center display-4">EXO 3.2</h3>
+<div class="offset-md-2 col-md-8 text-center">Afficher des nombres allant de 1 à 100 avec le chiffre 50 en rouge.</div><hr>
+
+
+<?php 
+
+
+echo'<div class="offset-md-3 col-md-6">';
+for($chiffre = 0; $chiffre< 101; $chiffre++)
+{
+  
+//if($chiffre > 50){echo $chiffre.' '; continue;}//ça marche mais ya plus simple
+ if($chiffre === 50){echo "<div class='text-danger d-md-inline '>$chiffre  </div>" ; }
+ else{echo "<div class='text-dark d-md-inline '>$chiffre  </div>" ;}
+//if($chiffre < 50){echo $chiffre.' '; }
+
+     }
+echo '</div>';
+?>
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+  <hr>
+  <hr>
+ <h3 class="text-center display-4">EXO 3.3</h3>
+<div class="offset-md-2 col-md-8 text-center">Afficher des nombres allant de 2000 à 1930.</div><hr>
+
+<?php 
+echo'<div class="offset-md-3 col-md-6">';
+for($nombre = 2000; $nombre>1929; $nombre--)
+{echo $nombre.' ';}
+echo '</div>';
+?>
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+  <hr>
+  <hr>
+ <h3 class="text-center display-4">EXO 3.4</h3>
+<div class="offset-md-2 col-md-8 text-center">Afficher le titre suivant 100 fois : <\h1>Titre à afficher 100 fois<\h1></div><hr>
+
+<?php 
+echo'<div class="offset-md-3 col-md-6">';
+for($titre = 0; $titre<100; $titre++)
+{ echo' Titre à afficher 100 fois ';}
+echo '</div>';
+?>
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+  <hr>
+  <hr>
+ <h3 class="text-center display-4">EXO 3.5</h3>
+<div class="offset-md-2 col-md-8 text-center">Afficher le titre suivant "<\h1>Je m'affiche pour la Nème fois<\h1>". Remplacer le N avec la valeur de $i (tour de boucle).</div><hr>
+
+
+<?php 
+echo'<div class="offset-md-3 col-md-6">';
+for($n= 1; $n<21; $n++)
+{if($n ==1 ){echo 'Je m\'affiche pour la '.$n.'ere fois' ;continue;}
+if($n > 2 ){echo'_Je m\'affiche pour la '.$n.'ème fois';}
+   }
+echo '</div>';
+?>
+
+
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+  <hr>
+  <hr>
+  <h2 class="text-center display-4">CALCULATRICE</h2>
+
+<div class="offset-md-2 col-md-8 text-center">La page calculatrice est un formulaire avec un menu déroulant qui nous permet de choisir le signe de l’opération (addition, soustraction, multiplication, division).</div><hr>
+
+
+
+
+<form method='post'>
+
+  <div class="form-row ">
+
+  <div class="form-group offset-md-3 col-md-2">
+   
+    <input type="text" class="form-control" placeholder="ex: 1 "name="chiffre1">
+  </div>
+  <div class="form-group">
+    
+    <select class="form-control" name="operateur">
+      <option value='*'>x</option>
+      <option value='/'>/</option>
+      <option value='+'>+</option>
+      <option value='-'>-</option>
+     
+    </select>
+  </div>
+
+  <div class="form-group col-md-2">
+   
+    <input type="text" class="form-control" placeholder="ex: 1 "name="chiffre2">
+  </div>
+<button type="submit" class="btn btn-primary h-25 col-md-2" name="calcul">calcul</button>
+
+</div>
+
+<?php
+if(isset($_POST['calcul'])){
+//echo'<pre>';print_r($_POST);echo'</pre>';
+
+if($operateur === "*"){$resultat= $chiffre1 * $chiffre2 ;}
+if($operateur === "/"){if($chiffre1 == 0 && $chiffre2 == 0){$resultat="que cherche-tu as faire ?";}else{
+  $resultat= $chiffre1 / $chiffre2 ;}}
+if($operateur === "+"){$resultat= $chiffre1 + $chiffre2 ;}
+if($operateur === "-"){$resultat= $chiffre1 - $chiffre2 ;}
+
+echo  "<div class='offset-md-5 col-md-2 text-center'>".$chiffre1.' '. $operateur.' '.$chiffre2."</div><br>";
+echo "<div class='offset-md-5 col-md-2 bg-success text-center py-lg-3 rounded-sm' >".$resultat."</div>";
+}
+?>
+
+
+
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 </body>
 </html>

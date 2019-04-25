@@ -79,10 +79,6 @@ if($_POST)
        }
 $produit_insert->bindValue(":photo",$photo_bdd,PDO::PARAM_STR);
 $produit_insert->execute();
-  
-
-
-
 
 }
 

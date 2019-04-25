@@ -1,0 +1,11 @@
+1 - creez une base de donnée ELEVE : et la table = eleve
+-> id_eleve INT
+-> nom VARCHAR
+-> classe VARCHAR
+-> parents VARCHAR
+-> telephone INT
+
+2- Créez un formulaire d'inssertion et enrengistrer 5 eleves.
+-> assurez vous que les valeurs pour le champ telephone soient bien enrengistré en INT
+
+3 - affichez toutes les informations contenu dans la BDD ELEVE sur la meme page que le formulaire
