@@ -1,0 +1,24 @@
+1 dossier AJAX
+    1 dossier 01-ajax-get
+        1 fichier index.html
+        1 fichier ajax-info.txt
+
+-------------------
+
+AJAX (asynchronus javascript and XML) mais on devrait plus l'appeleer AJAJ (J pour le format JSON)
+
+
+
+il permet de mettre a jour un elements de la page sans la recharger entierement
+(ne pas hesiter a aller voir la doc sur google)
+permet ex: 
+    faire un chat en direct;
+---------------------
+
+
+1 dossier 02-ajax-insert
+    1 fichier ajax2.JS
+    1 fichier ajax2.php
+    1 fichier init.php
+    1 fichier index.php
+
