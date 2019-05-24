@@ -1,0 +1,14 @@
+dossier app
+    fichier config.xml
+dossier controller
+    fichier controller.php
+dossier model
+dossier view
+    fichier layout.php
+    fichier donnees.php
+    donnees-form.php
+fichier autoload
+fichier index
+
+
+((plus ou moin la construction d'un frame work))

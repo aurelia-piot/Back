@@ -26,7 +26,7 @@ class Renault extends Vehicule
 //----------------------------------------------------
 
 /* 
- Faite en sorte de ne pas avoir d'objet Vehicule                                                    //abstract class Vehicule
+ Faite en sorte de ne pas avoir d'objet Vehicule                                                    //abstract class Vehicule (OU private __construct)
  Renault et Peugeot doivent posseder la meme methode demarrer()                                     //FINAL public function demarrer(){return"je demarre <hr>";}
  obligation pour renault de declarer un carburant 'diesel' et pour la peugeot un carburant 'essence //abstract public function carburant(){}
  La renault doit faire 30 test de plus qu'un Vehicule de Base
