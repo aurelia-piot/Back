@@ -1,0 +1,569 @@
+                POO
+la class permet d automatiser un tratement d'information
+        ----------------- INTRO------------------
+Par convention a premiere lettre de la class commence toujours par une majuscule
+
+-VOCABULAIRE
+    Variable = propiété = attribut
+    Fonction = méthode
+    instance = objet
+
+class PDO
+{
+    public function query(){};
+    public function prepare(){};
+    public function exec(){};
+
+}
+
+Une classe  permet de contenir des variables avec des informations ainsi que des methodes comportant des traitements.
+Une classe est un regroupement d'informations (Plan, modèle)
+objet = application du plan
+
+-une classe est un regroupement d'information / de donnée que l'on peut comparer à un plan de construction 
+-pour pouvoir utiliser les données dèclarées dans la classe, nous devons instancier la classe 'Panier' afin d'en créer un objet, c'est a dire un exemplaire de la classe. l'objet permet d'atteindre et d'utiliser dees fonctionnalités declarées dans la classe.
+
+
+echo'<pre>';print_r(get_class_methods($a));echo'</pre>'; 
+permet d'afficher les methodes ...
+
+
+--------------------------------------------------------------------------------------
+                    CLASSES --- OBJETS --- INSTANCIATION
+
+class Panier
+{
+    public $nbProduits ; 
+---- apartient à l'objet et non a la classe---
+   
+    public function ajouterArticle()
+    {
+        return "l'article a été ajouté !";
+    }
+     protected function retirerArticle()
+     {
+         return "L'article a été retiré!";
+     }
+     private function affichageArticle()
+     {
+         return "Voici les articles!";
+     }
+     
+}     
+
+niveau de visibilité
+    -public :   accessible de partout
+    -protected: accessible dans la class Mere et heritieres
+    -private :  accessible uniquement dans la classe Mere
+                l'element est accessible uniquement dans la class ou cela a ete declarée
+
+
+    les niveaux de visibilites permettent de proteger des données, par exemple les données saisie d'un formulaire ne pourront pas etre attribués a n'importe quelle propriété declarée, elles passeront par des methodes qui permettront de controler ce données
+
+
+$panier1 = new Panier;
+
+--creation d'un nouvel exemplaire / objet issu de la class 'Panier' 
+
+--'new' est un mot clef permettant d'effectuer une instanciation (creer un objet) 
+une classe peut produir plusieurs objets
+
+-----
+
+echo'<pre>';var_dump($panier1);echo'</pre>'; 
+-- on observe un objet issu de la calsse 'Panier" a l'identifiant '#1' (referece de l'objet),il peut y avoir plusieurs objets conserver en RAM, ils auront tous un identifiant différents
+
+$panier1->nbProduits = 5; 
+--ici on affect une valeur a la propriete public 'nbProduits'
+
+echo " Panier 1 >".$panier1->ajouterArticle().'<hr>'; 
+ --on pioche une methode de la class a travers l'objet, toujours les parenthese car on fait appel à une methode (fonction) / methode public OK
+
+MAIS !!!!
+
+echo " Panier 1 >".$panier1->retirerArticle().'<hr>'; 
+ --/!\ ERREUR !! methode protected !! l'element est accessible uniquement dans la class ou cela a ete declarer (class mere) ainsi que de les classes heritieres
+
+-------
+
+$panier2 = new Panier;
+ --ici on crée un nouvel exemplaire / objet issu de la class 'Panier' 
+echo'<pre>';var_dump($panier2);echo'</pre>';
+--on peut observer un objet issu de la classe 'Panier' a l'identifiant'#2'
+
+$panier2->nbProduits = 3;
+--ici on affect une valeur a la propriete public 'nbProduits'
+echo"Nombre de produit dans le panier: ".$panier2->nbProduits." <hr>";
+--affichage
+
+$panier1 represente l'objet issu de la classe 'Panier'
+la class est le plan de construction/$panier1 represente un exemplaire de la classe
+
+
+------------------------------------------------------
+
+                        GETTEUR -- SETTEUR -- CONSTRUCT
+
+class Etudiant
+{
+    private $prenom; 
+    public function __construct($arg) 
+    -- -- $arg est une variable de reception
+    {
+        echo "instanciation, nous avons reçus l'information suivant: $arg <br>"; r
+        return $this->setPrenom($arg);
+    }
+
+ ---  SETTEUR -----
+ public function setPrenom($prenom)
+        {
+            if(is_string($prenom))
+            {
+                $this->prenom= $prenom;
+            }
+            else 
+            ---- nous tombons dans le else dans le cas ou ce n'est pas du text
+            {
+                $this->error ="Ce n'est pas un string!!";
+                return $this->error;
+
+            }
+        }
+ --- GETTEUR ---
+    public function getPrenom()
+        -- un getteur ne reçois jamais d'argument
+        {
+            return $this->prenom;
+        }  
+
+} --- fin class Etudiant
+
+--------
+$etudiant= new Etudiant('Peter');
+$etudiant= new Etudiant(''''valeur''''' de $arg');
+
+--------
+$etudiant->prenom ='Peter';
+ /!\ il n'est pas possible d'acceder et d'affecter une valeur a une propriete 'private' , cela permet de ne pas entrer n'importe quoi dans les proprietes
+----
+
+
+$etudiant->__construct('Peter');
+--le constructeur peut tout de meme etre appelé comme une methode classique
+
+
+__construct() est une methode magique qui s'execute automatiquement lorsque l'on instancie la classe. elle sera l'equivalent du init.php avec session_start(), connexion BDD, autoloaud etc..
+
+- new Etudiant('Peter')-> a l'instancaition de la classe, Peter va automatiquement se stocker en argument de la methode magique __construct()
+
+
+   -- setteur : permet de controler les données
+
+   -- getteur: permet de voir/ exploiter les données finales
+                par exemple, on peut se servire des methodes getteur pour enrengistrer des données dans une bdd
+
+   -- private $prenom: la propriete est privé afin que l'on ne puisse pas la remplir de l'exterieur  de la classe sans avoir fait de controles au prealable, c'est à dire sans etre passé par le getteur / setteur
+
+Si nous avons un formulaire avec 10 champ ---->  nous auron 10 setteur et 10 getteur;
+
+$homme->setPrenom("Peter"); 
+-- setPrenom definit un prenom
+-- $homme->setPrenom($_POST['prenom']);// si il ya un formulaire , on y recupere le champ prenom
+
+echo $homme->getPrenom().'<hr>'; // getPrenom pour retourner le prenom
+
+
+--------------------------------------------------------------------------------------
+                            MANIPULATION TYPE ARGUMENT
+
+class Vehicule
+{
+    
+    private $litresEssence ; 
+    public function setLitresEssence($litres){$this->litresEssence = $litres;}
+    public function getLitresEssence(){return $this->litresEssence;}     
+}
+
+$vehicule1 = new Vehicule;
+
+$vehicule1->setLitresEssence(5);
+--echo " la voiture possede : <strong> ".$vehicule1->getLitresEssence()."</strong> litres d'essence";
+
+----------
+
+class Pompe 
+{
+    private $litresEssence;
+SET    public function setlitresEssence($litresEssence){$this->litresEssence=$litresEssence;}
+GET    public function getlitresEssence(){return $this->litresEssence;}
+                                        // $v = $vehicule
+    public function donnerEssence(Vehicule $v)
+-- ici on exige un argument de type 'Vehicule', c'est a dire un objet issu de la classe 'Vehicule'
+    {echo'<pre>';var_dump($v);echo'</pre>';
+
+-- on defini le nombre de litre d'essence de la pompe   
+        $this->setLitresEssence($this->getLitresEssence()-(50- $v->getLitresEssence()));
+
+-- on defini le nombre de litre d'essence du vehicule 1
+SET
+        $v->setLitresEssence($v->getLitresEssence()+(50 - $v->getLitresEssence()));}  
+         ----->   $v->setLitresEssence(800+(50 - 5()));}
+
+--fin function donneeEssence
+
+
+
+    $pompe = new Pompe;
+echo'<pre>';var_dump($pompe);echo'</pre>';
+
+echo $pompe->setLitresEssence(800);
+
+echo 'la pompe dispose de '. $pompe->getlitresEssence().'<hr>';
+    $pompe->donnerEssence($vehicule1);
+
+echo 'nombre du litre d\'essence a la pompe :'. $pompe->getLitresEssence().' Litres <hr>';
+echo 'nombre du litre d\'essence pour le vehicule 1 :'. $vehicule1->getLitresEssence().' Litres <hr>';
+
+
+
+--------------------------------------------------------------------------------------
+                    CONSTANTE --- STATIC ---- SELF 
+
+un element non static appartient a l'objet et static appartient a la class
+si je modifie un element static , je modifie la class elle même
+$objet->    element d'un objet a l'exterieur de la class
+$this->     element d'un objet a l'interrieur de la class
+class::     element d'un objet a l'exterieur de la class
+self::      element d'un objet a l'interrieur de la class
+
+
+*---------------------MAISON
+class Maison
+{
+private  static $nbPiece = 7;
+    -- propriete qui appartient a la classe
+
+public static $espaceTerrain = '500m';
+    -- propriete qui appartient a la classe
+
+public $couleur = 'blanc';
+    -- propriete qui appartient a l'objet'
+
+const HAUTEUR = '10m';
+    -- propriete qui appartient a la classe
+
+private $nbPorte = 10;
+    --methode qui appartient a la class car elle est static
+
+public static function getNbpiece(){return self::$nbPiece;}
+    --self permet de faire appel a une propriete static declarer à l'interieur de la class
+    -- methode qui appartient a l'objet
+
+public function getNbPorte(){return $this->nbPorte;}
+   
+}fin de la class
+
+$maison= new Maison;
+-- creation de l'objet
+
+
+-- affichage du nombre de piece de la maison
+
+echo 'Nombre de piece de la maison : <strong>'.Maison::getNbPiece().'</strong><hr>';
+-- lorsqu'une methode est static, cela veut dire qu'elle appartient a la classe et non a l'objet , donc on l'appel via la class
+
+-- -affichage de l'espace terrain de la maison
+
+echo 'la maison possede un espace de  : <strong>'.Maison::$espaceTerrain.'</strong><hr>';--quand on appelle via la class on appelle avec le dollard
+
+-- affichage de la hauteur de la maison
+
+echo 'La maison fait : <strong>'.Maison::HAUTEUR.'</strong><hr>';
+
+--4 afficher la couleur de la maison
+
+echo 'La maison est de couleur : <strong>'. $maison->couleur.'</strong><hr>';
+
+--5 afficher le nombre de porte de la maison
+
+echo 'Nombre de porte de la maison : <strong>'. $maison->getNbPorte().'</strong><hr>';
+
+----- ERREUR --------
+
+echo $maison::$espaceTerrain.'<hr>';
+--/!\ devrait donner une erreur , on ne doit pas appeler une proprieter static, donc qui appartient a la classe via l'objet
+
+echo $maison->$espaceTerrain.'<hr>';
+-- /!\ donne une erreur , il n'est pas possible d'acceder a une propriete static via l'objet
+
+echo $maison->getNbPiece().'<hr>';
+--/!\ fonctionne mais pas logique !! bonne ecriture :  Maison::getNbPiece()
+
+echo Maison::$couleur.'<hr>';
+--/!\ Erreur !! on ne doit pas appeler une propriete public par la classe
+
+------ERREUR----------
+
+
+----------VEHICULE
+
+class Vehicule
+{
+    private static $marque ="BMW";
+    Private $couleur='noir';
+    public static function setMarque($mark){ self::$marque = $mark;}
+    public static function getMarque(){return self::$marque;}
+
+    public function setCouleur($couleur){$this->couleur=$couleur;}
+    public function getCouleur(){return $this->couleur;}
+
+
+}fin de la class vehicule
+-------
+$vehicule2= new Vehicule;
+
+$vehicule2->setCouleur('violet');
+
+echo 'le vehicule 2 est de marque : <strong>'.Vehicule::getMarque().'</strong> et est de couleur: <strong>'.$vehicule2->getCouleur().'</strong><hr>';
+
+-----
+$vehicule4= new Vehicule;
+
+Vehicule::setMarque('Mercedes');
+$vehicule4->setCouleur('gris');
+
+echo 'le vehicule 4 est de marque : <strong>'.Vehicule::getMarque().'</strong> et est de couleur: <strong>'.$vehicule4->getCouleur().'</strong><hr>';
+
+un element non static appartient a l'objet et static appartient a la class
+si je modifie un element static , je modifie la class elle même
+
+$objet->    element d'un objet a l'exterieur de la class
+$this->     element d'un objet a l'interrieur de la class
+class::     element d'un objet a l'exterieur de la class
+self::      element d'un objet a l'interrieur de la class
+
+------------------SINGLETON
+
+class singleton
+{
+    public $numero =20;
+
+    private static $instance = null;
+
+    private function __construct(){}
+-- la class n'est pas instanciable car le constructeur est privé
+
+    private function __clone(){}
+-- l'objet ne sera alors pas clonable
+
+    public function getInstance()
+
+        {
+            if(is_null(self::$instance))
+--si $instance est null, la 1er fois c'est null, toute les autres fois je ne rentre pas ici car il a un objet dans $instance
+            {self::$instance=new Singleton;}
+--on stock l'objet de la class singleton
+            return self::$instance;
+--dans tout les cas je retourne un objet $instance
+        }    
+
+}
+// un pattern Singleton permet de trouver une solution simple a un probleme recurrant
+//$s=new Singleton;// --- /!\ erreur il n'est pas possible  d'instancier la class puisque le constucteur est privé
+
+$objet1 = Singleton::getInstance();
+echo'<pre>';var_dump($objet1);echo'</pre>';//objet1 est a la reference #1
+
+
+
+$objet2 = Singleton::getInstance();
+echo'<pre>';var_dump($objet2);echo'</pre>';//objet2 est a la reference #1, il s'agit bien du meme objet
+
+$objet2->numero=22;
+-- lorsque l'on change la valeur de la propriete 'numero' cela impacte sur les 2 variables $objet1 et $objet2, c'est normal puisque que c'est le meme objet
+
+----------------------------------------------------------------------------------------
+                            HERITAGE 
+
+---------ANIMALS
+
+class Animal
+{
+    protected function deplacement(){return"Je me deplace";}
+    public function manger(){return"Je mange chaque jour";}
+}
+//--------------
+class Elephant extends Animal
+{
+    public function quiSuisJe(){return"Je suis un elephant et ".$this->deplacement().'<hr>';}
+}
+///-------------
+
+class Chat extends Animal
+{
+    public function quiSuisJe(){return'Je suis un Chat';}
+    public function manger(){return"Je mange beaucoup trop chaque jour";}
+
+}
+
+
+
+$elephant=new Elephant;
+
+echo'<pre>';print_r(get_class_methods($elephant));echo'</pre>';
+echo $elephant->quiSuisJe();
+
+--Creer un objet issu de la class 'Chat' et afficher la resultat des 2 methodes declarees a l'interieur
+
+$chat=new Chat;
+
+echo'<pre>';print_r(get_class_methods($chat));echo'</pre>';
+echo $chat->quiSuisJe().' et '.$chat->manger().'<hr>';
+--affiche "Je mange beaucoup trop chaque jour" et non pas "Je mange chaque jour" car la methode aété redefinie dans la class 'chat'
+--L'interpreteur cherche d'abord dans la class 'chat' et seulement si la methode n'avait pas ete trouver , il aurait chercher dans la class dont j'herite
+
+--il n'est pas possible d'heriter de plusieurs classe en meme temp --> class Chat extends Animal, Elephant --> /!\ erreur !!
+
+-------------------------
+------HERITAGE SENS
+
+class A
+    {
+        public function test1(){return"test1<hr>";}
+    }
+class B extends A    
+    {
+        public function test2(){return"test2<hr>";}
+    }
+
+class C extends B    
+    {
+        public function test3(){return"test3<hr>";}
+    }
+
+$a=new A;
+echo'<pre>';print_r(get_class_methods($a));echo'</pre>';
+echo $a->test1();
+-- test1
+
+//-------------
+$b=new B;
+echo'<pre>';print_r(get_class_methods($b));echo'</pre>';
+echo $b->test1();
+-- test1
+echo $b->test2();
+-- test2
+
+//-------------
+$c=new C;
+echo'<pre>';print_r(get_class_methods($c));echo'</pre>';
+echo $c->test1();
+-test1
+echo $c->test2();
+-test2
+echo $c->test3();
+-test3
+
+
+------------------INSTANCE SANS HERITAGE-----
+
+
+class A
+    {
+        public function direBonjour(){return"Bonjour";}
+    }
+
+class B --//Sans heritage de la class A
+    {
+        public $objetA;
+--__construct s'execute automatiquement lorsque nous instancion B
+
+        public function __construct(){$this->objetA= new A; 
+-- je crée un objet issu de la class A que je stock dans la propriete nommé $objetA
+
+            echo"S'execute automatiquement et detail:";
+            echo'<pre>';var_dump($this->objetA);echo'</pre>';}
+
+        public function uneMethode(){return $this->objetA->direBonjour();}
+--dans mon objet B '$b' ($this), je peux appeler des methodes sur mon objetA '$objetA"
+--Habitullement nous mettons qu'un seule fleche, mais la, $objetA contient un objet, une autre fleche est donc possible
+
+    }
+
+$b = new B;
+echo $b->uneMethode().'<hr>';
+echo $b->objetA->direBonjour();
+
+
+-----------------------ENTREPRISE--------------
+
+class Electricien
+    {
+        public function getSpecialiste()
+        {return"Pose de cable ou armoires electrique ...<hr>";}
+        public function getHoraires(){return"10H/ 18H <hr>";}
+    }
+//------
+
+class Plombier
+    {
+        public function getSpecialiste()
+        {return"tuyau, robinets, chauffe-eau, compteur...<hr>";}
+        public function getHoraires(){return"8H/ 19H <hr>";}
+    }
+//------
+
+class Entreprise
+{
+    public $numero = 0;       
+    public function appeUnEmploye($employe){
+    $this->numero++;
+
+
+    $this->{"monEmploye". $this->numero}= new $employe; 
+-- A chaque fois que l'on execute la methode appeUnEmploye(), cela genere dans le meme temps une propriete dans laquelle est stocké une instance d'une classe
+    return $this->{"monEmploye". $this->numero};}
+}
+
+
+$entreprise = new Entreprise;
+$entreprise->appeUnEmploye('Plombier');
+
+--Afficher les methodes de la class 'Plombier' via l'objet issu de la class entreprise '$entreprise'
+
+echo $entreprise->monEmploye1->getSpecialiste();
+echo $entreprise->monEmploye1->getHoraires();
+
+--lorsque la variable est publique , pas la peine de mettre un $ (ici a monEmploye1)
+
+
+
+$entreprise->appeUnEmploye('Electricien');
+echo $entreprise->monEmploye2->getSpecialiste();
+echo $entreprise->monEmploye2->getHoraires();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

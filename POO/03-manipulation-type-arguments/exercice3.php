@@ -64,7 +64,8 @@ class Pompe
         $this->setLitresEssence($this->getLitresEssence()-(50- $v->getLitresEssence()));
         //on defini le nombre de litre d'essence du vehicule 1
         $v->setLitresEssence($v->getLitresEssence()+(50 - $v->getLitresEssence()));}  
-                                                                                                                //   800      -         50 - 5                                                5                 + 50 -5
+                              //   800      -         50 - 5                     
+    //                           5                 + 50 -5
 
 
 }
