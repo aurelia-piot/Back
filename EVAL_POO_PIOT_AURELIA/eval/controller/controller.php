@@ -1,4 +1,6 @@
 <?php
+//01
+//CONTROLLER
 // le fichier controller.ph contient toute les action et les methode a executée, Par exemple si je souhaite afficher les info 10 par 10, c'est dans ce fichier que l'on fera ce traitement
 // MAIS il ne contient aucune requete !! celle-ci ce trouve dans EntityRepository
 namespace Controller;
@@ -11,6 +13,11 @@ class Controller
         $this->db = new \model\EntityRepository;
         //permet de recupere une connexion a la BDD qui se trouve dans le fichier EntityRepository
     }
+
+///-------------------------------------------------------------------------------------------------------------------///
+
+                //HANDLEREQUEST /////////////
+
     public function handlerRequest()//methode qui permet de definir l'action de l'internaute/ utilisateur, si l'utilisateur veut ajouter un employé, c'est la methode save() qui s'execute
         {
             $op =isset($_GET['op'])?$_GET['op']:NULL;//si l'indice op est definit dans l'url on le recupere dans une variable, sinon on stock 'null'
@@ -25,6 +32,11 @@ class Controller
                     die("probleme dans l'action de l'internaute!");
             }
         }
+///-------------------------------------------------------------------------------------------------------------------///
+
+                //DELETE /////////////
+
+
 
         public function delete()
         {
@@ -32,6 +44,11 @@ class Controller
             $r =$this->db->delete($id);//on fait appel a la methode delete() du fichier EntityRepository
             $this->redirect('index.php');//une fois la suppression executée, on redirige vers la page index.php
         }
+
+///-------------------------------------------------------------------------------------------------------------------///
+
+                //SELECT /////////////
+
 
 
 public function select()
@@ -44,7 +61,9 @@ public function select()
     ));
 }
 
+///-------------------------------------------------------------------------------------------------------------------///
 
+                //SELECTALL /////////////
 
 
 
@@ -64,6 +83,11 @@ public function select()
             //on pointe sur la methode declarée dans EntityRepository.php
 
         }
+
+///-------------------------------------------------------------------------------------------------------------------///
+
+                //SAVE /////////////
+
 
     public function save($op)
         {
@@ -88,6 +112,10 @@ public function select()
                 ));
         }
 
+     ///-------------------------------------------------------------------------------------------------------------------///
+
+                //RENDER /////////////   
+
     public function render($layout, $template,$parameters = array())
         {
             extract($parameters);//permet d'avoir les indices du tableaux comme variable
@@ -102,6 +130,13 @@ public function select()
             return ob_end_flush();//permet de libere l'affichage et fait tout apparaitre sur la page
         }
 
+
+
+
+
+///-------------------------------------------------------------------------------------------------------------------///
+
+                //REDIRECT /////////////
     public function redirect($url)//methode permettant d'effuctuer une redirection apres modification ou ajout
     {
         header('Location:'.$url);//methode determinée dans le save()

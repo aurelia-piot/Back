@@ -43,6 +43,8 @@ class EntityRepository
        $r=$q->fetchAll(\PDO::FETCH_ASSOC);
        return $r;
    }
+
+
    public function getFields()//methode permettant de recupere le nom des champs/colonnes de la table 'employe'
    {
        $q =$this-> getDb()->query("DESC ".$this->table);//DESC : description de la table
@@ -51,16 +53,33 @@ class EntityRepository
    }
 
 
+
+   public function select($id)
+   {    //$q = $this->getDB()->query("SELECT*FROM employe WHERE idEmploye = 7256);
+       $q = $this->getDB()->query("SELECT*FROM ".$this->table.' WHERE id'.ucfirst($this->table)."= ".(int)$id);
+       //$this->table : employe
+       //id'.ucfirst($this->table) : idEmploye---------table = employe /// ucfirst = uppercasefirst = Employe
+       $r =$q->fetch(\PDO::FETCH_ASSOC);
+       return $r;
+   }
+
+
+
    public function save()
     {
         $id=isset($_GET['id'])?$_GET['id']:"NULL";
-        $q=$this->getDb()->query('REPLACE INTO'. $this->table . '(id' . ucfirst ($this->table) . ',' . implode(',', array_keys($_POST)) . ')VALUES (' . $id . ',' . "'" . implode("','", $_POST) . "'" . ')');
+
+        $q=$this->getDb()->query('REPLACE INTO '. $this->table . '(id' . ucfirst($this->table) . ',' . implode(',', array_keys($_POST)) . ')VALUES (' . $id . ',' . "'" . implode("','", $_POST) . "'" . ')');
         //$this->table: retourne la table 'employe'
         //id.ucfirst($this->table) = id_employe
         // implode(',',array_keys($_POST)) extrait chaque indice du formulaire afin de les appeler comme nom de champ/colonne dans la requete, separer par une virgule
     }
 
-
+ public function delete($id)
+ {
+     //$q = $this->getDB()->query("DELETE*FROM employe WHERE idEmploye = 7256);
+     $q = $this->getDB()->query("DELETE FROM ".$this->table.' WHERE id'.ucfirst($this->table)."= ".(int)$id); 
+ }
 
 
 

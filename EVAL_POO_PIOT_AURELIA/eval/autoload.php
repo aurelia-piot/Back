@@ -6,7 +6,7 @@ class Autoload
                                                 //new controller\Controller;
         require __DIR__.'/'.str_replace('\\','/',$className.'.php');//pour aller chercher un fichier
         //str_replace() permet de remplacer les anti-slash '\', nous avons deux anti slash, sinon l'interpreter considere que c'est un caractere d'echappement
-        echo " require ".__DIR__.'/'.str_replace('\\','/',$className.'.php');
+    // il est la--->    echo " require ".__DIR__.'/'.str_replace('\\','/',$className.'.php');
     }
 }
 spl_autoload_register(array('Autoload','className'));

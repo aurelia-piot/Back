@@ -15,7 +15,7 @@
             <input type="text" class="form-control" id="<?=$value['Field']?>"name="<?=$value['Field']?>"placeholder="Enter <?=$value['Field']?>"value="<?=($op == "update")? $values[$value['Field']]:''?>">
         </div>
     <?php endforeach;?>
-    <input type="submit" class="col-md-2 btn btn-dark mb-2">
+    <button type="submit" class="col-md-2 btn btn-dark mb-2">GO</button>
 
 
 </form>
