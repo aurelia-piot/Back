@@ -1,0 +1,135 @@
+                        SYMFONY
+                    -----------------
+                        Formateur
+         _________________   _____________________________
+        | Yakine HAMIDA   |||    yakine.hamida@evogue.fr  |
+        |_________________| |_____________________________|
+-------------------------------------------------------------------------
+mvc
+model vue controller
+m base de donnée 
+v vue  du site
+c control
+
+Programmes:
+
+    1-Revision PHP OO 
+        Visibilité
+        Autoload
+        Namespace
+        Interface
+
+    2- MVC 
+
+    
+    SYMFONY:  
+        Intro : Qu'est ce que SYMFONY
+        Etape 1 : Installation de SF 3.4
+        Etape 2 : Les blundles
+        Etape 3 : Les routes et les controllers
+        Etape 4 : Créer la Boutique sur SF
+        Etpae 5 : Twig( moteur de template)
+        Etape 6 : Les assets
+        Etape 7 : Entités
+        Etape 8 : DOCTRINE
+        Etape 9 : Les Formulaires
+        Etape10 : Validation des données
+        Etape11 : Association Mapping
+        Etape12 : Securité et Utilisateurs
+        Etape13 : Installation et Boutique sur SF 4.3
+        BONUS   : Mise en prod
+        BONUS   : FORMULAIRE de Contact
+
+
+
+//-------------------------------------------------------
+                INTRO Qu'est ce que Symfony
+//-------------------------------------------------------
+
+1/  Quel est l'interêt d'utiliser un Framework
+
+    A. une organisation optimisée
+    B.Fonctionnalitées communes à tous les projets
+    C. Services disponibles (Routing, Sécurité, BDD, Moteur de template, formulaire..)
+    D. Communauté
+
+
+2/ Choix du Framework
+
+    A. Propre Framework (pedagogie)
+    B. Les frameworks fullstacks (Symfony, Zend, Laravel, cake...)
+    C. Les minis Frameworks (Silex, Slim, CodeIgniter, Lumen...)
+
+
+
+3/ Symfony
+    ->symfony est un framework français créée par sensiolabs
+    versions:
+        LTS:
+            v2.8
+            v3.4 : 2.8 plus souple (moins rigide), avec des fonctionnalités
+            v4.4 : 3.4 BundleLess, Flex, Encore (webpack), Maker, PHP7.1
+
+
+--------------------------------------------------
+--------------------------------------------------
+
+
+
+
+
+
+
+        ETAPE 1 : Installation de SF 3.4
+Sommaire:
+1/ Installer Composer
+2/ Installer SF3.4
+3/ Arborecsence des dossiers et fichiers
+4/ Lancement de l'application
+
+-----------------------------------------------
+
+1/ INSTALLATION COMPOSER
+
+Composer est un outils de dépendance. Il permet de telecharger et de mettre a jour tous les outils (services, composants, dependances) dont on a besoin.
+    -Telecharger: https://getcomposer.org/download/
+    composer-Setup.exe
+
+    -Installer : Suivre les Etapes
+
+
+2/ Installer SF3.4
+    -Dans le dossier Symfony
+    -MAJ + clic-droit : ouvrir une fenetre powwershell ici
+    <cmd>(se placer dans le dossier de destination avant!)
+        composer create-project symfony/framework-standard-edition test
+     ("test" est le nom de notre projet)
+
+    ===> A ce stade  un dossier test à ete créé, c'est un nouveau projet SF.
+
+    3/ Arborescence des dossiers et fichiers
+
+    - app/     :    contient toute la configuration de l'app (BDD,securité, routes...)
+    - bin/     :    Les executables de l'app (de SF)
+    - src/     :    Le dossier dans lequel nous allons coder notre MVC 
+    - var/     :    Les fichiers ecrites par SF au fur et a mesure (cache, logs)
+    - tests/   :    Les tests unitaires.
+    - web/     :    Repertoire WEB(app.php ou app_dev.php -> img/css/js/fonts) tous ce que le navigateur aura besoin pour l'affichage
+    - vendor/  :    Le coeur de SF (les fichier codés par les sensio Labs)
+
+    - composer.json : contient la liste de toutes les dépendances dont on a besoin. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
