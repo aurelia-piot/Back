@@ -11,12 +11,13 @@ mettre le prix =19,00
 et mettre homme si le public =m et femme si le public est f (if else) #}
 {% block content %}
         {# {{ dump(produit) }} #}
+		{# {{ dump(categories) }} #}
 
 <h1 class="display-4 text-center mt-4">DETAIL DU PRODUIT <strong class="text-info">{{ produit.titre|upper }}</strong></h1>
 	<div class="col-lg-6 col-md-12 mx-auto form1">
 	<div class="card h-100">
 	   
-		<a href=""><img class="card-img-top" src="" alt=""></a>
+		<a href=""><img class="card-img-top" src="{{ asset('photo/' ~ produit.photo )}}" alt=""></a>
 	   
 		<div class="card-body text-center">
 		<h4 class="card-title text-center">
@@ -28,7 +29,7 @@ et mettre homme si le public =m et femme si le public est f (if else) #}
 		<p class="card-text text-center">{{ produit.taille }}</p><hr>
 		<p class="card-text text-center">{% if  produit.public == "m"  %} Homme {% elseif  produit.public == "f"  %} Femme {% else %}Mixte{% endif %}</p><hr>
 		<p class="card-text text-center">{{ produit.couleur }}</p><hr>
-		<a href=">" class="alert-link text-dark card-text"><i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;retour vers la catégorie PULL</a>
+		<a href="{{path('categorie',{'cat':produit.categorie})}}" class="alert-link text-dark card-text"><i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;retour vers la catégorie {{ produit.categorie}}</a>
 		</div>
 		<div class="card-footer text-center">
             {%if produit.stock >0%}

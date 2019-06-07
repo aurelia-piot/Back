@@ -8,6 +8,7 @@
 {% block content %}
     
         {# {{ dump(produits) }} #}
+		{# {{dump(categories)}} #}
 
 <div class="row col-12 p-5">
 
@@ -15,7 +16,13 @@
 
 <!--  Menu des catégorie -->
 	<div class="col-lg-3">
-	
+		<div class="list-group mb-4">
+			<a href="{{path('homepage')}}" class="list-group-item text-light bg-dark">Tous les produits</a>
+			{% for cat in categories %}
+			<!-- BOuCLE foreache $produits as pdt -->
+				<a href="{{path('categorie',{'cat':cat.categorie})}}"class="list-group-item text-dark">{{ cat.categorie}} </a>
+			{% endfor %}
+		</div>
 	</div>
 
 
@@ -28,7 +35,17 @@
 			<!-- Debut Vignette Produit -->
 			<div class="col-lg-4 col-md-6 mb-4">
 				<div class="card h-100">
-					<a href=""><img class="card-img-top" src="" alt=""></a>
+
+
+
+
+					<a href="{{path ('produit',{'id':pdt.id} ) }}"><img class="card-img-top" src="{{ asset('photo/' ~ pdt.photo )}}" alt=""></a>
+
+
+
+
+
+
 					<div class="card-body">
                         <h4 class="card-title text-center">
                             <a href="" class="alert-link text-dark">{{ pdt.titre }}</a>

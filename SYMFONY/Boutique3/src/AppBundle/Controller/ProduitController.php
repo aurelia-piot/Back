@@ -15,6 +15,9 @@ use AppBundle\Entity\Produit;
 
 class ProduitController extends Controller
 {
+
+
+
     /**
      * @Route("/", name="homepage")
      */
@@ -22,20 +25,55 @@ class ProduitController extends Controller
     {
         //1 : Recupere les infos
 
-        $repo = $this->getDoctrine()->getRepository(Produit::class);
+        $repo = $this-> getDoctrine() -> getRepository(Produit::class);
         $produits=$repo->findAll();//et avec ça on recupere tout les produits sous forme d'objet
+
+
+
+
+        //1.2 Récupérer les categories:
+
+        $em= $this ->getDoctrine()->getManager();
+
+          //Methode 1 : Create Query:(sql)
+        $query = $em -> createQuery("SELECT DISTINCT(p.categorie) FROM AppBundle\Entity\Produit p ORDER BY p.categorie ASC");//car il ne manipule pas de table
+
+        $categories= $query -> getResult();//equivalent du FETCH::ASSOC
+
+
+
+          //Methode 2 : Query Builder: (php)
+          $query = $em ->createQueryBuilder();
+          $query 
+          -> select('p.categorie')
+          -> distinct(true)
+          -> from(produit::class,'p') //par ce qu'il manipule des entié 'le p est un alias'
+          -> orderBy('p.categorie','ASC');
+          //SELECT DISTINCT(categorie) FROM produit ORDER BY categorie ASC
+
+        $categories = $query -> getQuery() -> getResult();
 
 
                 
         //2 Retourner une vue
 
         $params =array(
-            'produits'=>$produits // là on peut exploiter tout nos produits dans notre vue
+            'produits'=>$produits, // là on peut exploiter tout nos produits dans notre vue
+            'categories'=> $categories
         );
         return $this->render('@App/Produit/index.html.twig',$params);
     }
  
 
+
+
+
+
+
+
+
+
+    //-----------------------------------------------------------------------------------------------------------------
 
 
         /**
@@ -75,10 +113,13 @@ class ProduitController extends Controller
         // 1: Recupere les infos
         $repo =$this ->getDoctrine()-> getRepository(Produit::class);
         $produits=$repo->findBy(array('categorie'=> $cat));
+
+        $categories = $repo -> getAllCategories();//recup de la fonction getAllCategories depuis 'ProduitRepository.php'
         
         // affichier la vue
         $params =array(
-            'produits'=> $produits
+            'produits'=> $produits,
+            'categories'=>$categories
         );
         return $this->render('@App/Produit/index.html.twig',$params);
 

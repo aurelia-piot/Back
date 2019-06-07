@@ -1,5 +1,60 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    Page admin qui liste tout les produits!
+    {# Page admin qui liste tout les produits! #}
+
+
+{# {{ dump(produits)}} #}
+
+    <h1 class="display-4 text-center">LISTE DES PRODUITS</h1>
+<hr>
+    <div class="m-4 row">
+        <a href="" class="btn btn-primary">Ajouter un produit</a>    
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>ID du Produit</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Taille</th>
+                <th>Couleur</th>
+                <th>Stock</th>
+                <th>Prix</th>
+                <th colspan="3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pdt in produits %}
+            <tr>
+                <td><img src="{{ asset('photo/' ~ pdt.photo )}}" alt=""height="100px"> </td>
+                <td>{{ pdt.id }}</td>
+                <td>{{ pdt.titre }}</td>
+                <td>{{ pdt.description }}</td>
+                <td>{{ pdt.taille }}</td>
+                <td>{{ pdt.couleur }}</td>
+
+
+
+                {% if pdt.stock ==0 %}
+                <td class="text-danger"><b>{{ pdt.stock  }}</td>
+                {% elseif pdt.stock <=20 %}
+                <td class="text-warning"><b>{{ pdt.stock  }}</td>
+                {% else %}
+                <td class="text-success"><b>{{ pdt.stock  }}</td>
+                {% endif %}
+
+
+                <td>{{ pdt.prix }}</td>
+                <td><a href="{{path ('produit',{'id':pdt.id} ) }}" target="blank" class="text-primary"><i class="fas fa-eye"></i></a> </td>
+                <td><a href="{{path ('admin_produit_update',{'id':pdt.id} ) }}"  onclick="return confirm('le lien ne fonctionne pas encor man ');"class="text-success"><i class="fas fa-edit"></i></a></td>
+                <td><a href="{{path ('admin_produit_delete',{'id':pdt.id}) }}" onclick="return confirm('you\'r sur brah ?');"class="text-danger"><i class="fas fa-trash"></i></a></td>
+                {# pour le delete on cible le chemin admin_produit_delete qui a ete preparer dans la fonction adminProduitDeleteAction dans AdminController #}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}
