@@ -1,7 +1,10 @@
 1 demarrer le serveur localhost
 puis Pour demarrer le server 
 			php bin/console server:run
-			
+
+-------------------------------------------------------------------			
+			composer update pour refaire des dossier chez soi
+--------------------------------------------------------------------
 			
 			
 			
@@ -209,69 +212,69 @@ Sommaire :
 
 
 2/ L'objet Request 
-	<code>
-	use Symfony\Component\HttpFoundation\Request;
+		<code>
+		use Symfony\Component\HttpFoundation\Request;
 
-	Correspond à la partie requete de la requête HTTP. 
+		Correspond à la partie requete de la requête HTTP. 
 
-	<code>
-	$session = $request -> getSession(); 
-	-> récupère la session ($_SESSION)
+		<code>
+		$session = $request -> getSession(); 
+		-> récupère la session ($_SESSION)
 
-	Autres exemples : 
-	<code>
-	$session -> set('prenom', 'Yakine');
-	echo $session -> get('prenom'); 
+		Autres exemples : 
+		<code>
+		$session -> set('prenom', 'Yakine');
+		echo $session -> get('prenom'); 
 
-	Autre méthode :
-	<code>
-	$request -> session -> set('prenom', 'Yakine'); 
+		Autre méthode :
+		<code>
+		$request -> session -> set('prenom', 'Yakine'); 
 
-	
-	Autres utilités de $request : 
-	<code>
-	$request -> query -> get('argument_url');
-	$request -> request -> get('champs_form');
-	$request -> cookies -> get('cookie');
-	$request -> server -> get('server');
-	
+		
+		Autres utilités de $request : 
+		<code>
+		$request -> query -> get('argument_url');
+		$request -> request -> get('champs_form');
+		$request -> cookies -> get('cookie');
+		$request -> server -> get('server');
+		
 3/ L'objet Response
 
-	- Correspond à la partie réponse d'une requête HTTP. 
-	
-	<code>
-	use Symfony\Component\HttpFoundation\Response;
-	
-	- Toute action (fonction) doit avec une réponse. 
-	
-	<code>
-	return new Response('toto');
-	
-	- Même la fonction render est une réponse. 
-	
-	<code>
-	return $this -> render();
-	return $this -> getTemplating() -> renderResponse(); 
-	
+		- Correspond à la partie réponse d'une requête HTTP. 
+		
+		<code>
+		use Symfony\Component\HttpFoundation\Response;
+		
+		- Toute action (fonction) doit avec une réponse. 
+		
+		<code>
+		return new Response('toto');
+		
+		- Même la fonction render est une réponse. 
+		
+		<code>
+		return $this -> render();
+		return $this -> getTemplating() -> renderResponse(); 
+		
 	
 4/ Redirection
 
-	<code>premiere méthode : 
-	use Symfony\Component\HttpFoundation\RedirectResponse;
-	
-	cf route "/redirect/" et "/redirect2"
-	
-	/!\ A ce stade toutes nos routes doivent avoir un name
+		<code>premiere méthode : 
+		use Symfony\Component\HttpFoundation\RedirectResponse;
+		
+		cf route "/redirect/" et "/redirect2"
+		
+		/!\ A ce stade toutes nos routes doivent avoir un name
 	
 5/ Message
 	
-	<code>
-	$session -> getFlashBag() -> add();
+		<code>
+		$session -> getFlashBag() -> add();
 
-	-> permet d'enregistrer des messages qui seront disponibles dans d'autres pages (messages de félicitations, ou d'erreur).
-	
-	-> app.session : Qui nous permet en Twig de récupérer les infos en session. 
-	-> app.user : Qui nous permet en Twig de récupérer les infos de l'utilisateur actuellement connecté
+		-> permet d'enregistrer des messages qui seront disponibles dans d'autres pages (messages de félicitations, ou d'erreur).
+		
+		-> app.session : Qui nous permet en Twig de récupérer les infos en session. 
+		-> app.user : Qui nous permet en Twig de récupérer les infos de l'utilisateur actuellement connecté
 
 
 
@@ -743,22 +746,199 @@ Create Query : https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/ref
 
 
 
+-----------------------
+ETAPE 9 : Les formulaires
+-----------------------
+
+sommaire :
+1/ Le fonctionnements des formulaires
+2/ Generer les formulaire
+3/ Recuperation des données du fromulaire
+4/ Personnaliser un formulaire avec Bootstrap
+5/ Update un enrengistrement 
+6/ Validation des données
+7/ Champs file
+
+------------------------
+
+1/ Le fonctionnements des formulaires
+
+De la meme façon qu'on ne manipule pas des enreigistrements en BDD, mais bien des objets (Entity),chaque formulaire va etre lié a une entité.
+
+-Ainsi un formulaire est lié a un objet...
+
+inscription			objet Membre
+Ajout de produit	objet Produit
+Modif de produit	objet Produit
+
+Un formulaire est generer grace a une classe (Type --> ProduitType)
+Chaque champ d'un formulaire correspond a une classe, service de SF. Cela permet de generer tous les controles sur les formulaires.
+
+
+2/ Generer les formulaire
+
+	<cmd>
+	php bin/console generate:doctrine:form AppBundle:Produit
+
+===> cela créé un dossier Form dans notr Bundle, et un fichier ProduitType.php, qui contient le construction du formulaire.
+
+
+3/ Recuperation des données du fromulaire
+
+	A. Genrer le form dans la route
+		<code>
+			use AppBundle\Form\ProduitType 
+			$form = $this -> createForm(ProduitType::class,$produit);
+
+	B. Afficher la vue du formulaire dans la vue
+		-on envoie le formulaire a la vue via les params
+		<code>
+			params =array('produitForm'=>$form->createView())
+		-on affiche le formulaire :
+		<code>
+			{{ form(produitForm) }} __> afficher tout le formulaire
+			---
+			{{ form_row(produitForm.reference) }}____>affiche un champ (label, champ, errors)
+			----
+			{{ form_label(produitForm.reference) }}	__ affiche le label
+			{{ form_widget(produitForm.reference) }}__affiche le champ
+			{{ form_errors(produitForm.reference) }}__affichie les erreurs
+
+		/!\ Si on affiche les champ un par un, il ne faut pas oublier:
+			{{ form_start(produitForm) }}
+			{{ form_end(produitForm) }}
+
+
+
+	C.Recuperer les données saisies
+		<code>
+		$form -> handleRequest($request);
+		/!\ cette ligne est importante pour pouvoir recupérer les donnée en POST !!
+
+
+
+	D.Checker la validité du form et traiter les données (enregistrement)
+		<code>
+		if($form -> isSubmitted() && $form -> isValid())
+		{
+			//persist
+			//flush
+			//message de Validation
+			//redirection
+		}
 
 
 
 
+4/ Personnaliser un formulaire avec Bootstrap
+	<code> app/config/config.yml
+	twig:
+		form_themes:
+			- 'Bootstrap_48layout.html.twig'
+
+
+5/ Update un enrengistrement 
+	pour update un enrengistrement avec le systeme des formulaire sur SF, rien de plus simpe. Lorsque l'on créé le formulaire dans la route, on precise un objet deja existant (cf route admin/produit/update/{id}).
+
+	---> on dit que l'on hydrate le formulaire.
+
+
+6/ Validation des données
+	-De base le formulaire est genere par SF de maniere Basique, pour gerer nous meme les contrainte et la securité, cela ce passe dans le fichier ProduitType, et on utilise 'constraints' pour definir les contraintes liées au formulaire.
+
+	-> cf ProduitType.php
+
+
+7/ Champs file
+
+	Pour le gestion des photos il faut:
+	1/ Enregistrer le nom de la photo dans la BDD
+	2/ Enregistrer la photo (data) sur le serveur.
+
+	===> CF fonction uploadFile() dans l'entity Produit
+	/!\ Dans notre formulaire d'ajout de produit il n'est plus necessaire d'avoir le champ photo (TEXT), mais bien un champ file (FILE) qui va recupérer les info de la photo uploadée
+
+pour aller plus lopin avec les formulaire et symfony :
+https://symfony.com/doc/current/reference/forms/types.html
 
 
 
+exo:
+inscription membre (page/ inscription)
+1/	entité Membre = Entity Membre
+2/	controller: MembreController---> Route "/inscription"
+3/	Formulaire (MembreType)---> console
+4/	Route, creation du formulaire et sa vue
+5/	La vue, afficher le formulaire
+6/	Route: Recuperer les infos du formulaire et enregistrer le membre.
+
+Attention etant donnée que le champ statut existe dans notre BDD, le formulaire va etre créer avec un champ statut, hors ce n'est pas au memebre de choisir son statut 
 
 
 
+-----------------------
+ETAPE 10 : Validation des données(Assert)
+---------------------
+
+Pour allée plus loin avec la validation des données et Symfony :
+https://symfony.com/doc/current/validation.html
 
 
 
+-----------------------
+ETAPE 11 : Association Mapping
+---------------------
+
+-----------------------
+ETAPE 12 : Securite et utilisateurs
+---------------------
+
+sommaire:
+1/	Niveau de securité
+2/	Fichier de securité
+3/	Creation des routes
+4/ Classe Membre (extends UserInterface)
+5/ Layout
+
+------------------
+1/	Niveau de securité
+
+	- De base Symfony va considerer un visiteur lambda comme un anonyme
+	- Ensuite on va definir des niveaux de securiter pour les utilisateur connecté:
+	 	-ROLE_USER	(user connecté)
+		-ROLE_ADMIN
+		-ROLE_SUPER_ADMIN
+		-....etc
+
+	- SF a un systeme de parefeu :
+		-on definit les routes que les ROLE peuvent enprunter.
+		-> Si un user annonyme --> homepage = Ok
+		-> Si un user annonyme --> profil = pas ok -> connexion --> profil
+		-> si user connecté --> profil = OK
+		-> si user connecté --> admin/produit = pas ok --> page erreur(404)
+
+		En fonction du visiteur et de la ressources demandée on peut parmatrer une reaction.
+		
 
 
 
+2/	Fichier de securité
+<code> app/config/security.yml
+
+
+
+a faire la connexion par les membres:
+les connexion mapping...
+
+
+
+3/	Creation des routes
+
+
+4/ Classe Membre (extends UserInterface)
+
+
+5/ Layout
 
 
 

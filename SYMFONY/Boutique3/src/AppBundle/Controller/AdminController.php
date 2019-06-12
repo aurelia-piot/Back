@@ -12,6 +12,8 @@ use  AppBundle\Entity\Commande;
 use  AppBundle\Entity\DetailsCommande;
 
 
+use  AppBundle\Form\ProduitType;
+
 
 class AdminController extends Controller
 {
@@ -53,37 +55,61 @@ class AdminController extends Controller
     
     /**
      * @Route("/admin/produit/add/",name="admin_produit_add")
-     * www.maboutique.com/admin/
+     * http://localhost:8000/admin/produit/add/
      */
-    public function adminProduitAddAction(){
+    public function adminProduitAddAction(Request $request){
+        //(Request $request) on en a besoin pour les forms et autres
 
         //on créér un objet de la class produit (vide)
         $produit = new Produit;
 
-        // on le remplis:
-        $produit -> setReference('XXX');
-        $produit -> setCategorie('pull');
-        $produit -> setPublic('m');
-        $produit -> setPrix('25.99');
-        $produit -> setStock('150');
-        $produit -> setTitre('Pull marinière');
-        $produit -> setPhoto('mariniere.jpeg');
-        $produit -> setDescription('super pull façon bretonne');
-        $produit -> setTaille('L');
-        $produit -> setCouleur('blanc et bleu');
+                    // // on le remplis:
+                    // $produit -> setReference('XXX');
+                    // $produit -> setCategorie('pull');
+                    // $produit -> setPublic('m');
+                    // $produit -> setPrix('25.99');
+                    // $produit -> setStock('150');
+                    // $produit -> setTitre('Pull marinière');
+                    // $produit -> setPhoto('mariniere.jpeg');
+                    // $produit -> setDescription('super pull façon bretonne');
+                    // $produit -> setTaille('L');
+                    // $produit -> setCouleur('blanc et bleu');
+                    
+
+        $form = $this -> createForm(ProduitType::Class, $produit);//vue que la class n'existe pas dans ce ficher on appele un autre fichier où elle existe avec 'use'
+        // ici le formulair et $produit sont lier
+        //on creer un formuliare du type produit et on le lie a notre objet $produit. on dit que le formulaire va hydrater l'objet(les infos du formulaire vont remplire l'objet)
+
+        $form -> handleRequest($request);
+        // Lier definitivement l'objet $produit au formulaire.. Elle permet de traiter les informations en POST
+
+
+        if($form -> isSubmitted() && $form -> isValid())//si le formulaire est soumis et est valide (sans erreur) on va:
+        {
+
+            // requet insertion = EntityManger
+            $em = $this -> getDoctrine() -> getManager(); // on recup' le manager
+    
+            $em -> persist($produit);// on enrengistre dans le systeme l'objet
+            // $em -> persist($produit2);// on enrengistre dans le systeme l'objet
+
+            $produit -> uploadPhoto();
+    
+            $em -> flush();//dans le cas de plusieurs objets, le tout est envoyer avec cette seul requete
+
+            $request -> getSession()-> getFlashbag() -> add('success','le produit '.$produit-> getId().' a bien ete ajouté ! ');//message de felicitation
+
+            return $this -> redirectToRoute('admin_produit');
+        }
         
 
-        // requet insertion = EntityManger
-        $em = $this -> getDoctrine() -> getManager(); // on recup' le manager
-
-        $em -> persist($produit);// on enrengistre dans le systeme l'objet
-        // $em -> persist($produit2);// on enrengistre dans le systeme l'objet
-
-        $em -> flush();//dans le cas de plusieurs objets, le tout est envoyer avec cette seul requete
-
         
 
-        $params = array();
+        $params = array( //partie visuel du form
+            'produitForm'=> $form -> createView(),//createView() permet de generer la partie visuel (HTML) du formulaire.
+            'title'=> 'modifier un produit'
+
+        );
         return $this -> render('@App/Admin/form_produit.html.twig',$params);
     }
     //localhost:8000/admin/produit/add
@@ -94,30 +120,43 @@ class AdminController extends Controller
     
     /**
      * @Route("/admin/produit/update/{id}",name="admin_produit_update")
-     * www.maboutique.com/admin/
+     * www.maboutique.com/admin/update/{id}
      */
-    public function adminProduitUpdateAction($id){
+    public function adminProduitUpdateAction($id,Request $request){
 
         $em = $this -> getDoctrine() -> getManager();
 
         //recuperation du produit a modifier (par rapport a son id):
         $produit = $em -> find(Produit::class,$id);
 
-        //je le modifie
-        $produit -> setPrix('1000');
+    $form = $this -> createForm(ProduitType::class,$produit);
+    //en creant le formulaire on le lie a notre objet produit quie va etre modifié, on dit qu'on hydrate le formulaire.
 
-        //je l'enregistre
-        $em -> persist($produit);
-        $em -> flush();
-        //on passe par le manager car il n'y a que lui qui peut effectuer un persiste et un flush
+    
+            $form -> handleRequest($request);
+          
+            if($form -> isSubmitted() && $form -> isValid())//si le formulaire est soumis et est valide (sans erreur) on va:
+            {             
+                //je l'enregistre
+                $em -> persist($produit);
+                $produit -> uploadPhoto();
+                $em -> flush();
+                //on passe par le manager car il n'y a que lui qui peut effectuer un persiste et un flush
+                $request -> getSession()-> getFlashbag() -> add('success','le produit '.$produit-> getTitre().' a bien ete modifier! ');//message de felicitation
+                return $this -> redirectToRoute('admin_produit');
 
 
+            }
 
         $params = array(
-            'id'=> $id
+            'id'=> $id,
+            'produitForm'=> $form -> createView(),
+            'title'=> 'modifier le produit '. $produit -> getId(),
+            'photo'=>$produit -> getPhoto()
         );
-        return $this -> render('@App/Admin/list_produit.html.twig',$params);
-//localhost:8000/admin/produit/update/11
+        return $this -> render('@App/Admin/form_produit.html.twig',$params);
+//localhost:8000/admin/produit/update/15
+
 
     }
 
@@ -139,6 +178,7 @@ class AdminController extends Controller
         //on recupere l'objet produit
         $produit =$em->find(Produit::class,$id);
 
+        $produit -> removePhoto();
         //on supprime le produit :
         $em->remove($produit);
         $em-> flush();// on 'envoie la donnée de suppression

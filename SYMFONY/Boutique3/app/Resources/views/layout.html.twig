@@ -29,6 +29,10 @@
     <div class="collapse navbar-collapse" id="navbarsExample04">
         <ul class="navbar-nav mr-auto">
 
+{# ------------------------------------------------------------------------------------------------------------ #}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {# si le viiteur est connecter (peu importe le grade) #}
+
         <li class="nav-item">
             <a class="nav-link" href="{{ path('homepage') }}">Boutique</a>
         </li>
@@ -39,21 +43,34 @@
             <a class="nav-link" href="">Panier</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="">Deconnexion</a>
+            <a class="nav-link" href="{{ path('deconnexion') }}">Deconnexion</a>
         </li>
+
+
+
+{# ------------------------------------------------------------------------------------------------------------ #}
+    {% else %}
+
 
         <li class="nav-item">
             <a class="nav-link" href="">Boutique</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('membre_inscription') }}">Inscription</a>
+            <a class="nav-link" href="{{ path('inscription') }}">Inscription</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('membre_connexion') }}">Connexion</a>
+            <a class="nav-link" href="{{ path('connexion') }}">Connexion</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="">Panier</a>
         </li>
+
+
+    {% endif %}
+{# ------------------------------------------------------------------------------------------------------------ #}
+
+    {% if is_granted('ROLE_ADMIN') %}
+
         	<li class="dropdown">	
 			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				Admin
@@ -64,7 +81,13 @@
 				<li><a class="dropdown-item" href="{{ path('admin_commande') }} "><i class="fas fa-shopping-cart"></i>&nbsp;Gestion Commande</a></li>
 			</ul>
 		</li> 
+
+
+    {% endif %}
+  
        
+
+{# ------------------------------------------------------------------------------------------------------------ #}
 
         </ul>
         <form class="form-inline my-2 my-md-0">
@@ -76,7 +99,19 @@
     <section class="container mon-conteneur">
 		<div class="row form1">
 		
-			
+			<!-- ------------Message succes --------------------->
+                {% for message in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">
+                {{ message }}
+                </div>
+                {% endfor %}
+<!-- --------------------------Message erreur --------------- -->
+                {% for message in app.session.flashbag.get('errors') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+                {% endfor %}
+
 			{% block content %}
                 {# block appeler "content " qui va recevoir notre contenu , il a ete determiner dans un autre fichier où on fait le "lien" a ce layout là avec extend#}
                 {# agit comme un element "inline" #}
