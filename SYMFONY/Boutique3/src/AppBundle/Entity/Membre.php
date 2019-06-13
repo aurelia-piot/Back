@@ -3,15 +3,37 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Membre
  *
  * @ORM\Table(name="membre")
- *  @ORM\Entity(repositoryClass="AppBundle\Repository\MembreRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MembreRepository")
  */
-class Membre
+class Membre implements UserInterface
 {
+    /**
+     * un membre peut avoir 0 ou plusieurs commande
+     * Une commande a un seul membre
+     * @ORM\OneToMany(targetEntity="Commande",mappedBy="membreId")
+     * 
+     */
+    private $commandes;//Array avec toutes les commandes
+        public function __construct(){
+            $this ->commandes = new ArrayCollection();
+        }
+        public function setCommandes(ArrayCollection $commandes){
+            $this ->commandes =$commandes;
+            return $this;
+        }
+        public function getCommandes(){
+            return $this ->commandes;
+        }
+
+
+
     /**
      * @var integer
      *
@@ -82,7 +104,7 @@ class Membre
      *
      * @ORM\Column(name="statut", type="integer", nullable=false)
      */
-    private $statut;
+    private $statut = 0;
 
     /**
      * @var string
@@ -90,6 +112,48 @@ class Membre
      * @ORM\Column(name="password", type="string", length=150, nullable=false)
      */
     private $password;
+	
+	
+	/**
+	* @ORM\Column(name="roles", type="array")
+	*
+	*/
+	private $roles = array();
+	
+	/**
+	*
+	* @ORM\Column(name="salt", type="string", length=256, nullable=true)
+	*/
+	private $salt; 
+	
+	
+	public function setRoles(array $roles){
+		$this -> roles = $roles;
+		return $this; 
+	}
+	
+	public function getRoles(){
+		$roles = $this -> roles; 
+		//$roles[] = 'ROLE_USER';
+		return $this -> roles; 
+	}
+	
+	/**
+	* Fonction obligatoire liée à l'interface UserInterface
+	*
+	*/
+	public function eraseCredentials(){}
+	
+	
+	public function setSalt($salt){
+		$this -> salt = $salt;
+		return $this;
+	}
+	
+	public function getSalt(){
+		return $this -> salt; 
+	}
+	
 
 
 

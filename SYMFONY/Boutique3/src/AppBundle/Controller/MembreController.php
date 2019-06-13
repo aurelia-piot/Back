@@ -10,6 +10,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Membre;
 use AppBundle\Form\MembreType ;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
             
 class MembreController extends Controller
@@ -21,7 +23,7 @@ class MembreController extends Controller
      * @Route("/membre/inscription/",name="inscription")
      * www.maboutique.com/membre/inscription
      */
-    public function membreIsncriptionAction(Request $request){
+    public function membreIsncriptionAction(Request $request, UserPasswordEncoderInterface $encoder){
 
         $membre = new Membre;
         $form = $this -> createForm(MembreType::class ,$membre);
@@ -37,12 +39,29 @@ class MembreController extends Controller
             $em = $this -> getDoctrine() -> getManager();
     
             $em -> persist($membre);
+
+            $membre -> setStatut('0');
+
+            $password = $membre -> getPassword();
+            //password saisi dans le formulaire
+
+            $password_crypte = $encoder -> encodePassword($membre, $password);
+            //on encode le password.
+
+            $membre -> setPassword($password_crypte);
+
+            $membre -> setSalt(NULL);
+            $membre-> setRoles(['ROLE_USER']);
+            //on definit un role par defaut
+
+
+            //--------------------
     
             $em -> flush();
 
             $request -> getSession()-> getFlashbag() -> add('success','merci pour votre inscritpion');
 
-            return $this -> redirectToRoute('membre_profil');
+            return $this -> redirectToRoute('connexion');
         }
 
 

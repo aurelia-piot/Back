@@ -29,7 +29,7 @@ class MembreType extends AbstractType
         ->add('nom',TextType::class,array())
         ->add('prenom',TextType::class,array())
         ->add('email',EmailType::class,array())
-        ->add('password',PasswordType::class,array())
+        ->add('password',PasswordType::class,array('required'=>false))
         ->add('civilite',ChoiceType::class,array(
             'choices'=>array(
                 'Homme'=>'m','Femme'=>'f','neutre'=>'n'
@@ -38,12 +38,17 @@ class MembreType extends AbstractType
         ->add('codepostal',IntegerType::class,array())
         ->add('ville',TextType::class,array())
         ->add('adresse',TextareaType::class,array())
-        ->add('statut',ChoiceType::class,array(
-            'choices'=>array(
-                'Membre'=>'0','Admin'=>'1'
-            ),
-        ))
         ->add('Inscritpion',SubmitType::class,array());
+
+
+        if( $options['statut'] == 'admin'){
+            $builder
+                -> add('roles');
+        }
+        else{
+            $builder
+        ->add('password',PasswordType::class,array('required'=>false));
+        }
 
     }/**
      * {@inheritdoc}
@@ -51,7 +56,8 @@ class MembreType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Membre'
+            'data_class' => 'AppBundle\Entity\Membre',
+            'statut'=>'user'
         ));
     }
 

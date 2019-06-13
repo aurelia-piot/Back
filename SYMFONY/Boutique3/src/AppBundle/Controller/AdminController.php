@@ -13,6 +13,8 @@ use  AppBundle\Entity\DetailsCommande;
 
 
 use  AppBundle\Form\ProduitType;
+use  AppBundle\Form\MembreType;
+
 
 
 class AdminController extends Controller
@@ -155,7 +157,7 @@ class AdminController extends Controller
             'photo'=>$produit -> getPhoto()
         );
         return $this -> render('@App/Admin/form_produit.html.twig',$params);
-//localhost:8000/admin/produit/update/15
+
 
 
     }
@@ -194,14 +196,24 @@ class AdminController extends Controller
 
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * @Route("/admin/membre/",name="admin_membre")
      * www.maboutique.com/admin/
      */
     public function adminMembrelistAction(){
+        $repo = $this ->getDoctrine() -> getRepository(Membre::Class);
+        
+    $membres = $repo -> findAll();
+    
+        $params = array(
+            'membres' => $membres,             
+            'title'=> 'liste des membres'
+        );
 
-        $params = array();
+
         return $this -> render('@App/Admin/list_membre.html.twig',$params);
     }
     //@App -> dossier et ressource de AppBundle
@@ -231,8 +243,12 @@ class AdminController extends Controller
      * www.maboutique.com/admin/
      */
     public function adminMembreAddAction(){
+        
+        $params = array( 
+            'title'=> 'ajouter un membre'
+        );
 
-        $params = array();
+   
         return $this -> render('@App/Admin/form_membre.html.twig',$params);
     }
 
@@ -242,12 +258,30 @@ class AdminController extends Controller
      * @Route("/admin/membre/update/{id}",name="admin_membre_update")
      * www.maboutique.com/admin/
      */
-    public function adminMembreUpdateAction($id){
+    public function adminMembreUpdateAction($id, Request $request){
+        $em =$this -> getDoctrine()-> getManager();
+        $membre = $em -> find(Membre::class,$id);
+
+        $form = $this -> createForm(MembreType::class,$membre, ['statut'=>'admin']);
+        $password =$membre ->getPassword();
         
+        $form -> handleRequest($request);
+        if($form -> isSubmitted() && $form -> isvalid())
+        {
+            $em->persist($membre);
+            $membre->setPassword($password);
+            $em-> flush();
+
+            $request -> getSession() -> getFlashBag() -> add('success','Le profil du membre'.$id.' a été mis à jour !');
+            return $this -> redirectToRoute('admin_membre');
+         }
+
+
         $params = array(
-            'id'=> $id
+            'id'=> $id,
+            'membreForm'=> $form -> createView()
         );
-        return $this -> render('@App/Admin/list_membre.html.twig',$params);
+        return $this -> render('@App/Admin/form_membre.html.twig',$params);
     }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -281,6 +315,8 @@ class AdminController extends Controller
 
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**
      * @Route("/admin/commande/",name="admin_commande")
@@ -288,7 +324,13 @@ class AdminController extends Controller
      */
     public function adminCommandeAction(){
 
-        $params = array();
+        $repo = $this ->getDoctrine()-> getRepository(Commande::class);
+
+        $commandes = $repo->findAll();
+
+        $params = array(
+            'commandes' => $commandes
+        );
         return $this -> render('@App/Admin/list_commande.html.twig',$params);
     }
     //@App -> dossier et ressource de AppBundle
